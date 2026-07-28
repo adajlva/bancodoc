@@ -205,7 +205,7 @@
             '<p class="det-alert-title">' + pend.length +
             (pend.length === 1 ? ' pendência cadastral' : ' pendências cadastrais') + '</p>' +
             '<ul class="det-alert-chips">' + chips + '</ul>' +
-            '<p class="det-alert-note">Os campos afetados estão indicados nas abas abaixo.</p>' +
+            '<p class="det-alert-note">Os campos afetados estão indicados abaixo.</p>' +
             '</div>';
     }
 
@@ -249,13 +249,6 @@
             return '<span class="nb-badge nb-badge--muted">' + esc(u) + '</span>';
         }).join(' ') || '-';
 
-        var pendForn = has('fornecedor') ? 1 : 0;
-        var pendCont =
-            (has('contraparte') ? 1 : 0) +
-            (has('gestor') ? 1 : 0) +
-            (has('comprador') ? 1 : 0) +
-            (has('unidadeNaoCadastrada') || has('unidadeNaoAtrelada') ? 1 : 0);
-
         var alertHtml = '';
         if (pend.length) alertHtml += renderAlertPend(pend);
         if (d.status === 'Pendencia Contratual') alertHtml += renderAlertClassif(d.id);
@@ -276,17 +269,8 @@
                 '</div>' +
             '</div>' +
             alertHtml +
-            '<div class="det-tabs" role="tablist" aria-label="Seções do pedido">' +
-                '<button type="button" class="det-tab is-active" role="tab" aria-selected="true" data-panel="forn">' +
-                    'Fornecedor' +
-                    (pendForn ? '<span class="det-tab-badge">' + pendForn + '</span>' : '') +
-                '</button>' +
-                '<button type="button" class="det-tab" role="tab" aria-selected="false" data-panel="cont">' +
-                    'Contratante' +
-                    (pendCont ? '<span class="det-tab-badge">' + pendCont + '</span>' : '') +
-                '</button>' +
-            '</div>' +
-            '<div class="det-panel is-active" id="panel-forn" role="tabpanel">' +
+            '<div class="det-section">' +
+                '<h3>Fornecedor</h3>' +
                 '<ul class="det-rows">' +
                     row('CNPJ', f.cnpj) +
                     row('Razão Social', f.razaoSocial, has('fornecedor')) +
@@ -296,7 +280,8 @@
                     rowHtml('Status Geral', badgeStatusFornecedor(f.statusGeral)) +
                 '</ul>' +
             '</div>' +
-            '<div class="det-panel" id="panel-cont" role="tabpanel" hidden>' +
+            '<div class="det-section">' +
+                '<h3>Dados Contratante</h3>' +
                 '<ul class="det-rows">' +
                     row('E-mail Contraparte', c.emailContraparte, has('contraparte')) +
                     row('Gestor do Contrato', c.gestorContrato, has('gestor')) +
@@ -308,11 +293,6 @@
 
         $('#detBody').html(html);
         $('#detStatus').html(badgeStatus(d.status));
-
-        /* Abre a aba que tem pendência, se houver */
-        if (!pendForn && pendCont) {
-            $('#detBody .det-tab[data-panel="cont"]').trigger('click');
-        }
     }
 
     function openModal(id) {
@@ -423,27 +403,8 @@
         ).show();
         $('#liveResultados').text('Nenhuma consulta realizada.');
         $('#pageRange').text('');
-        $('#gridPager').empty();
-        $('#gridFooter').attr('hidden', true);
-        $('#filtrosAtivos').empty();
-        $('#statusSummary').empty().attr('hidden', true);
-        atualizarBotaoExportar();
-    }
-
-    function limparResultados() {
-        consultaAtiva = false;
-        filteredRows = [];
-        currentPage = 1;
-        $('#gridBody').empty();
-        $('#gridVazio').html(
-            '<span class="nb-empty-state-icon" aria-hidden="true">⌀</span>' +
-            '<strong>Nenhuma consulta realizada</strong><br />' +
-            'Selecione os filtros desejados e clique em <strong>Filtrar</strong>.'
-        ).show();
-        $('#liveResultados').text('Nenhuma consulta realizada.');
-        $('#pageRange').text('');
-        $('#gridPager').empty();
-        $('#gridFooter').attr('hidden', true);
+        $('#gridPager').empty().attr('hidden', true);
+        $('#pagerTop').attr('hidden', true);
         $('#filtrosAtivos').empty();
         $('#statusSummary').empty().attr('hidden', true);
         atualizarBotaoExportar();
@@ -472,54 +433,41 @@
     }
 
     function pageWindow(total, page) {
-        /* Janela estilo print: até 5 páginas iniciais, reticências e última */
+        /* Estilo Relatório: até 10 números, reticências e Última à parte */
         var pages = [];
-        if (total <= 7) {
+        if (total <= 10) {
             for (var i = 1; i <= total; i++) pages.push(i);
             return pages;
         }
-        var windowSize = 5;
-        var start = Math.max(1, Math.min(page - 2, total - windowSize));
+        var windowSize = 10;
+        var start = Math.max(1, Math.min(page - 4, total - windowSize + 1));
         var end = Math.min(total, start + windowSize - 1);
-        if (start > 1) {
-            pages.push(1);
-            if (start > 2) pages.push('…');
-        }
         for (var p = start; p <= end; p++) pages.push(p);
-        if (end < total) {
-            if (end < total - 1) pages.push('…');
-            pages.push(total);
-        }
-        /* Evita duplicar 1 ou última se a janela já os inclui */
-        var dedup = [];
-        pages.forEach(function (x) {
-            if (dedup.indexOf(x) === -1) dedup.push(x);
-        });
-        return dedup;
+        return pages;
     }
 
-    function pad2(n) {
-        n = Number(n) || 0;
-        return n < 10 ? '0' + n : String(n);
+    function formatTotal(n) {
+        return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
     function renderPager() {
-        var $footer = $('#gridFooter');
+        var $top = $('#pagerTop');
         var $pager = $('#gridPager');
         var total = filteredRows.length;
         var pages = totalPages();
 
         if (!consultaAtiva) {
-            $footer.attr('hidden', true);
-            $pager.empty();
+            $top.attr('hidden', true);
+            $pager.empty().attr('hidden', true);
             $('#pageRange').text('');
             return;
         }
 
+        $top.removeAttr('hidden');
+
         if (!total) {
-            $('#pageRange').text('00 a 00 de 0 registros');
-            $pager.empty();
-            $footer.removeAttr('hidden');
+            $('#pageRange').text('0-0 de 0');
+            $pager.empty().attr('hidden', true);
             return;
         }
 
@@ -527,19 +475,26 @@
 
         var from = (currentPage - 1) * pageSize + 1;
         var to = Math.min(currentPage * pageSize, total);
-        $('#pageRange').text(pad2(from) + ' a ' + pad2(to) + ' de ' + total + ' registros');
+        $('#pageRange').text(from + '-' + to + ' de ' + formatTotal(total));
+
+        if (pages <= 1) {
+            $pager.empty().attr('hidden', true);
+            return;
+        }
 
         var html = '';
-        var prevDisabled = currentPage <= 1;
-        html += '<a href="#" class="ux-pager-nav" data-page="' + (currentPage - 1) + '"' +
-            ' aria-label="Página anterior"' +
-            (prevDisabled ? ' aria-disabled="true"' : '') + '>&lt;</a>';
+        var win = pageWindow(pages, currentPage);
+        var winStart = win[0];
+        var winEnd = win[win.length - 1];
 
-        pageWindow(pages, currentPage).forEach(function (item) {
-            if (item === '…') {
+        if (winStart > 1) {
+            html += '<a href="#" class="ux-pager-last" data-page="1" aria-label="Primeira página">« Primeira</a>';
+            if (winStart > 2) {
                 html += '<span class="ux-pager-ellipsis" aria-hidden="true">…</span>';
-                return;
             }
+        }
+
+        win.forEach(function (item) {
             if (item === currentPage) {
                 html += '<span aria-current="page">' + item + '</span>';
             } else {
@@ -547,13 +502,14 @@
             }
         });
 
-        var nextDisabled = currentPage >= pages;
-        html += '<a href="#" class="ux-pager-nav" data-page="' + (currentPage + 1) + '"' +
-            ' aria-label="Próxima página"' +
-            (nextDisabled ? ' aria-disabled="true"' : '') + '>&gt;</a>';
+        if (winEnd < pages) {
+            if (winEnd < pages - 1) {
+                html += '<span class="ux-pager-ellipsis" aria-hidden="true">…</span>';
+            }
+            html += '<a href="#" class="ux-pager-last" data-page="' + pages + '" aria-label="Última página">Última »</a>';
+        }
 
-        $pager.html(html);
-        $footer.removeAttr('hidden');
+        $pager.html(html).removeAttr('hidden');
     }
 
     function prioridadeStatus(status) {
@@ -890,19 +846,18 @@
         $('#detBody').on('click', '#btnClassificar', function () {
             solicitarClassificar($(this).data('id'));
         });
-        $('#detBody').on('click', '.det-tab', function () {
-            var panel = $(this).data('panel');
-            $('#detBody .det-tab').removeClass('is-active').attr('aria-selected', 'false');
-            $(this).addClass('is-active').attr('aria-selected', 'true');
-            $('#detBody .det-panel').removeClass('is-active').attr('hidden', true);
-            $('#panel-' + panel).addClass('is-active').removeAttr('hidden');
-        });
         $('#detBody').on('change', 'input[name="classif"]', function () {
             var val = $(this).val();
             $('#detBody .det-choice-opt').removeClass('is-selected');
             $(this).closest('.det-choice-opt').addClass('is-selected');
             $('#btnClassificar').prop('disabled', false).attr('aria-disabled', 'false').removeClass('is-disabled');
             $('#classifHint').text(val === 'Interno' ? 'Selecionado: Interno' : 'Selecionado: Externo');
+        });
+        $('#btnGlossarioStatus').on('click', function () {
+            openModal('divGlossarioStatus');
+        });
+        $('#glossarioFechar, #glossarioFechar2').on('click', function () {
+            closeModal('divGlossarioStatus');
         });
         $('#detFechar, #detFechar2').on('click', fecharDetalhe);
         $('#confirmFechar, #confirmCancelar').on('click', fecharConfirm);
@@ -915,6 +870,9 @@
             if (e.key !== 'Escape') return;
             if ($('#divConfirmClassif').is(':visible')) {
                 fecharConfirm();
+                e.preventDefault();
+            } else if ($('#divGlossarioStatus').is(':visible')) {
+                closeModal('divGlossarioStatus');
                 e.preventDefault();
             } else if ($('#divDetalhe').is(':visible')) {
                 fecharDetalhe();
