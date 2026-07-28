@@ -98,6 +98,15 @@
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
     }
+    /** Converte "Carlos Andrade" → "carlos.andrade@csn.com.br" */
+    function nomeParaEmailCsn(nome) {
+        var base = String(nome || '')
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().trim()
+            .replace(/[^a-z0-9\s.-]/g, '')
+            .replace(/\s+/g, '.');
+        return base ? base + '@csn.com.br' : '-';
+    }
     function nomeFornecedor(id) {
         var f = nbMock.getSync('fornecedores', id);
         return f ? f.nome : '-';
@@ -245,6 +254,9 @@
         var pend = d.pendencias || [];
         function has(k) { return pend.indexOf(k) >= 0; }
 
+        /* Se houver pendência de fornecedor, todos os campos da seção Fornecedor ficam pendentes */
+        var fornPend = has('fornecedor');
+
         var unidadesBadges = (c.unidades || []).map(function (u) {
             return '<span class="nb-badge nb-badge--muted">' + esc(u) + '</span>';
         }).join(' ') || '-';
@@ -272,20 +284,24 @@
             '<div class="det-section">' +
                 '<h3>Fornecedor</h3>' +
                 '<ul class="det-rows">' +
-                    row('CNPJ', f.cnpj) +
-                    row('Razão Social', f.razaoSocial, has('fornecedor')) +
-                    row('E-mail', f.email) +
-                    row('Telefone', f.telefone) +
-                    row('Endereço', f.endereco) +
-                    rowHtml('Status Geral', badgeStatusFornecedor(f.statusGeral)) +
+                    row('CNPJ', f.cnpj, fornPend) +
+                    row('Razão Social', f.razaoSocial, fornPend) +
+                    row('E-mail', f.email, fornPend) +
+                    row('Telefone', f.telefone, fornPend) +
+                    row('Endereço', f.endereco, fornPend) +
+                    rowHtml('Status Geral', badgeStatusFornecedor(f.statusGeral), fornPend) +
                 '</ul>' +
             '</div>' +
             '<div class="det-section">' +
                 '<h3>Dados Contratante</h3>' +
                 '<ul class="det-rows">' +
                     row('E-mail Contraparte', c.emailContraparte, has('contraparte')) +
-                    row('Gestor do Contrato', c.gestorContrato, has('gestor')) +
-                    row('Comprador', c.comprador, has('comprador')) +
+                    row('Gestor do Contrato',
+                        has('gestor') ? nomeParaEmailCsn(c.gestorContrato) : c.gestorContrato,
+                        has('gestor')) +
+                    row('Comprador',
+                        has('comprador') ? nomeParaEmailCsn(c.comprador) : c.comprador,
+                        has('comprador')) +
                     rowHtml('Unidades', unidadesBadges,
                         has('unidadeNaoCadastrada') || has('unidadeNaoAtrelada')) +
                 '</ul>' +

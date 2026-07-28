@@ -341,11 +341,13 @@
         }
         .det-rows li.is-pend + li.is-pend { margin-top: .35rem; }
         .det-rows li.is-pend .det-value {
-            display: flex; align-items: center; flex-wrap: wrap; gap: .5rem;
             color: var(--ux-text); font-weight: 500;
         }
         .det-pend-tag {
-            flex-shrink: 0;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: .4rem;
+            white-space: nowrap;
             font-size: .65rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: .02em;
             color: var(--ux-danger);
