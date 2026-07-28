@@ -183,8 +183,8 @@
             },
             contratante: {
                 emailContraparte: 'contraparte.grupocsn@csn.com.br',
-                gestorContrato: p.gestor,
-                comprador: COMPRADORES[(p.fornecedorId - 1) % COMPRADORES.length],
+                gestorContrato: nomeParaEmailCsn(p.gestor),
+                comprador: nomeParaEmailCsn(COMPRADORES[(p.fornecedorId - 1) % COMPRADORES.length]),
                 unidades: [codSap[p.unidade] || 'SAP0000']
             }
         };
@@ -296,12 +296,8 @@
                 '<h3>Dados Contratante</h3>' +
                 '<ul class="det-rows">' +
                     row('E-mail Contraparte', c.emailContraparte, has('contraparte')) +
-                    row('Gestor do Contrato',
-                        has('gestor') ? nomeParaEmailCsn(c.gestorContrato) : c.gestorContrato,
-                        has('gestor')) +
-                    row('Comprador',
-                        has('comprador') ? nomeParaEmailCsn(c.comprador) : c.comprador,
-                        has('comprador')) +
+                    row('Gestor do Contrato', c.gestorContrato, has('gestor')) +
+                    row('Comprador', c.comprador, has('comprador')) +
                     rowHtml('Unidades', unidadesBadges,
                         has('unidadeNaoCadastrada') || has('unidadeNaoAtrelada')) +
                 '</ul>' +
@@ -543,7 +539,7 @@
             case 'documento': return String(p.documento || '');
             case 'fornecedor': return nomeFornecedor(p.fornecedorId).toLowerCase();
             case 'unidade': return String(p.unidade || '').toLowerCase();
-            case 'gestor': return String(p.gestor || '').toLowerCase();
+            case 'gestor': return nomeParaEmailCsn(p.gestor).toLowerCase();
             case 'status': return prioridadeStatus(p.status);
             case 'dataInclusao': {
                 var parts = String(p.dataInclusao || '').split('/');
@@ -643,7 +639,7 @@
                     '</td>' +
                     '<td style="text-align:left">' + esc(nomeFornecedor(p.fornecedorId)) + '</td>' +
                     '<td style="text-align:left">' + esc(p.unidade || '-') + '</td>' +
-                    '<td style="text-align:left">' + esc(p.gestor || '-') + '</td>' +
+                    '<td style="text-align:left">' + esc(nomeParaEmailCsn(p.gestor)) + '</td>' +
                     '<td style="text-align:center">' + esc(p.dataInclusao || '-') + '</td>' +
                     '<td style="text-align:center">' + badgeStatus(p.status) + '</td>' +
                 '</tr>'
