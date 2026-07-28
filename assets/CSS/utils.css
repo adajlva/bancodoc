@@ -1,0 +1,242 @@
+﻿/* Mensagens de "Sucesso", "Alerta" ou "Erro", no topo da página */
+/* Importar também o Scripts utils */
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+
+.msgSucesso {
+    z-index: 1000001;
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    width: 91%;
+    left: 4%;
+    position: fixed;
+    top: 5px;
+    display: none;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.msgAlerta {
+    z-index: 1000001;
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    width: 91%;
+    left: 4%;
+    position: fixed;
+    top: 5px;
+    display: none;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.msgErro {
+    z-index: 1000001;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    width: 91%;
+    left: 4%;
+    position: fixed;
+    top: 5px;
+    display: none;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+#divAlerta #divAlertaTexto {
+    max-height: 200px;
+    overflow: auto;
+}
+
+#divContainerWait {
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    /* z-index alto é obrigatório: position:fixed sozinho cria stacking
+       context em browsers modernos. Sem z-index aqui, o contexto fica em
+       nível 0 no root, e elementos sticky com z-index > 0 (ex.: thead de
+       .nb-grid-scroll com z-index:2) acabam pintando POR CIMA do overlay.
+       Fica abaixo de #msgAlerta/Sucesso/Erro (1000001) — alertas precisam
+       aparecer sobre o loading. */
+    z-index: 999998;
+}
+
+#divWait {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background-color: silver;
+    opacity: 0.5;
+}
+
+
+.progresso-verde {
+    background: #f5f0f0;
+    border-radius: 6px;
+    border-color: #c3bebe;
+    height: 20px;
+    width: 130px;
+    clear: both;
+    text-align: left;
+    box-shadow: 1px 1px grey;
+}
+
+.barra-progresso-verde {
+    content: '';
+    display: block;
+    background: #4CAF50;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.progresso-texto {
+    font-size: 12px;
+    margin-left: 30%;
+    font-weight: bold;
+    vertical-align: sub;
+}
+
+.criar {
+    float: left;
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 90%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.grupoRiscoSim {
+    margin-bottom: 10px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: relative;
+    padding: .75rem 1.25rem;    
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-weight: 600;
+}
+
+.grupoRiscoNao {
+    margin-bottom: 10px;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    position: relative;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;    
+    font-weight: 600;
+}
+
+.divCharactersBdoc {
+    position: relative;
+    top: 0rem;
+}
+
+.charactersBdoc {
+    width: 65px;
+    border-radius: 50%;
+    box-shadow: 2px 3px 5px rgb(0 0 0 / 14%);
+    border: 1px solid black;
+}
+
+.charactersBdoc-bg {
+    color: #ffff;
+    background: rgba(236, 240, 241, .8);
+    cursor: pointer;
+}
+
+.charactersClickable-position {
+    position: absolute;
+    bottom: 0rem;
+    left: 35.3rem;
+}
+
+.talk-bubble {
+    margin: 40px;
+    display: inline-block;
+    position: relative;
+    width: 145px;
+    height: auto;
+    background-color: lightyellow;
+    top: 7rem;
+    left: 1.9rem;
+    box-shadow: 3px 2px 6px rgb(0 0 0 / 15%);
+}
+
+.tri-right.border.left-in:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -40px;
+    right: auto;
+    top: 30px;
+    bottom: auto;
+    border: 20px solid;
+    border-color: #666 #666 transparent transparent;
+}
+
+.tri-right.left-in:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 38px;
+    bottom: auto;
+    border: 12px solid;
+    border-color: lightyellow lightyellow transparent transparent;
+}
+
+.talktext {
+    padding: 1em;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+}

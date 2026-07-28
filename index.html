@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestão de Pré-Cadastro de Pedidos — UX Melhorado</title>
+
+    <link href="assets/CSS/utils.css" rel="stylesheet" />
+    <link href="assets/CSS/select2.min.css" rel="stylesheet" />
+    <link href="assets/CSS/jquery-ui-1.14.1.min.css" rel="stylesheet" />
+    <link href="assets/CSS/NovoBancodoc.css" rel="stylesheet" />
+
+    <style>
+        /* ── A11y / contraste (WCAG AA) ───────────────────────────────────── */
+        :root {
+            --ux-text: #1a1a1a;
+            --ux-text-secondary: #4a4a4a;   /* ≥4.5:1 em fundo branco */
+            --ux-text-muted: #595959;       /* ≥4.5:1 — substitui #8a8a8a/#777 */
+            --ux-border: #c8c8c8;
+            --ux-focus: #0b57d0;
+            --ux-danger: #b3261e;
+            --ux-danger-bg: #fce8e6;
+            --ux-warn: #8a5a00;
+            --ux-warn-bg: #fff4d6;
+            --ux-success: #0d6b3a;
+            --ux-success-bg: #e6f4ec;
+            --ux-info-bg: #eef3fb;
+            --ux-surface: #ffffff;
+        }
+
+        .select2-container--open { z-index: 100002; }
+        /* Select2 deve preencher a mesma largura dos demais campos do form */
+        #frmFiltros .nb-field .select2-container {
+            width: 100% !important;
+            max-width: 100%;
+        }
+        #frmFiltros .nb-field .select2-container .select2-selection {
+            width: 100%;
+        }
+
+        /* Skip link */
+        .ux-skip {
+            position: absolute; left: -9999px; top: 0; z-index: 100010;
+            background: #000; color: #fff; padding: .5rem 1rem; font-weight: 600;
+        }
+        .ux-skip:focus { left: .5rem; top: .5rem; }
+
+        /* Foco visível reforçado */
+        .nb-btn:focus-visible,
+        .nb-input:focus-visible,
+        .nb-profile-switch button:focus-visible,
+        .nb-grid-icon-btn:focus-visible,
+        .ux-doc-link:focus-visible,
+        .ux-chip-status:focus-visible {
+            outline: 3px solid var(--ux-focus);
+            outline-offset: 2px;
+        }
+
+        /* ── Barra de simulação de perfil (protótipo) ────────────────────── */
+        .nb-profile-bar {
+            display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: .75rem;
+            padding: .65rem .9rem;
+            background: var(--ux-info-bg);
+            border: 1px solid #c5d4f0;
+            border-radius: 8px;
+        }
+        .nb-profile-bar .nb-profile-label {
+            font-size: .85rem; color: var(--ux-text-secondary); font-weight: 600;
+        }
+        .nb-profile-switch {
+            display: inline-flex; border: 1px solid var(--ux-border);
+            border-radius: 6px; overflow: hidden; background: #fff;
+        }
+        .nb-profile-switch button {
+            border: 0; background: #fff; padding: .45rem 1rem; cursor: pointer;
+            font-size: .875rem; color: var(--ux-text); min-height: 36px;
+        }
+        .nb-profile-switch button.active {
+            background: var(--nb-primary, #FF9137); color: #fff; font-weight: 600;
+        }
+        .nb-profile-hint {
+            font-size: .875rem; color: var(--ux-text-secondary);
+            margin: 0 0 1rem; line-height: 1.4;
+        }
+        .ux-proto-tag {
+            display: inline-block; font-size: .7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .04em;
+            background: #1a3a6b; color: #fff; padding: .15rem .45rem;
+            border-radius: 3px; margin-right: .4rem; vertical-align: middle;
+        }
+
+        .nb-page-title {
+            text-transform: none; letter-spacing: normal;
+            font-size: 1.35rem; font-weight: 700; color: var(--ux-text);
+            margin-bottom: .25rem;
+        }
+
+        /* ── Filtros ativos ──────────────────────────────────────────────── */
+        .ux-active-filters {
+            display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+            min-height: 1.5rem; margin: .5rem 0 0;
+        }
+        .ux-active-filters:empty { display: none; }
+        .ux-filter-chip {
+            display: inline-flex; align-items: center; gap: .35rem;
+            background: #f0f0f0; border: 1px solid var(--ux-border);
+            border-radius: 999px; padding: .2rem .55rem .2rem .7rem;
+            font-size: .8rem; color: var(--ux-text);
+        }
+        .ux-filter-chip button {
+            border: 0; background: transparent; cursor: pointer;
+            font-size: 1rem; line-height: 1; color: var(--ux-text-secondary);
+            padding: .1rem .25rem; border-radius: 50%;
+        }
+        .ux-filter-chip button:hover { color: var(--ux-danger); background: #eee; }
+
+        /* Campo desabilitado: além de opacity, indicação textual */
+        .nb-field.is-locked .nb-field-label::after {
+            content: " (fixo ao seu perfil)";
+            font-weight: 400; color: var(--ux-text-muted); font-size: .8em;
+        }
+        .nb-field.is-locked .select2-container,
+        .nb-field.is-locked select {
+            opacity: .85; cursor: not-allowed;
+        }
+
+        /* ── Grid: link do documento + área de toque ─────────────────────── */
+        .ux-doc-link {
+            color: #0b57d0; font-weight: 600; text-decoration: underline;
+            text-underline-offset: 2px; background: none; border: 0;
+            padding: 0; cursor: pointer; font: inherit;
+        }
+        .ux-doc-link:hover { color: #0842a0; }
+        .nb-grid-icon-btn {
+            min-width: 40px; min-height: 40px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .ux-pend-count {
+            display: inline-flex; align-items: center; gap: .25rem;
+            margin-left: .35rem; font-size: .75rem; font-weight: 700;
+            color: var(--ux-danger); background: var(--ux-danger-bg);
+            border: 1px solid #f0b4b0; border-radius: 4px;
+            padding: .05rem .35rem; vertical-align: middle;
+        }
+
+        /* Empty state sem depender só de emoji */
+        .nb-empty-state { color: var(--ux-text-secondary); padding: 2rem 1rem; text-align: center; }
+        .nb-empty-state-icon {
+            display: block; font-size: 2rem; margin-bottom: .5rem;
+            color: var(--ux-text-muted); line-height: 1;
+        }
+
+        /* Live region SR */
+        .ux-sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+
+        /* ── Modal detalhe (limpo, com abas) ─────────────────────────────── */
+        #divDetalhe .nb-modal-box {
+            width: min(920px, 94vw); max-width: 920px; height: auto;
+            max-height: 90vh;
+            display: flex; flex-direction: column;
+        }
+        #divDetalhe .nb-modal-body {
+            flex: 1; overflow: auto; padding: 0 !important;
+            display: flex; flex-direction: column;
+        }
+        #divDetalhe .nb-modal-header {
+            display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+            padding-bottom: .75rem;
+        }
+        #divDetalhe .nb-modal-title { font-size: 1.05rem; }
+        .nb-modal-close {
+            min-width: 40px; min-height: 40px; font-size: 1.5rem; line-height: 1;
+        }
+
+        /* Meta compacta: 3 campos em uma linha */
+        .det-meta {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 0; border-bottom: 1px solid var(--ux-border);
+            background: #fafafa; padding: .75rem 1.25rem;
+        }
+        .det-meta-item { min-width: 0; }
+        .det-meta-item + .det-meta-item { padding-left: 1rem; border-left: 1px solid #e5e5e5; }
+        .det-meta-label {
+            display: block; font-size: .7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .03em;
+            color: var(--ux-text-muted); margin-bottom: .15rem;
+        }
+        .det-meta-value {
+            font-size: .9rem; color: var(--ux-text); font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* Alerta único (pendência ou classificação) — sem repetir depois */
+        .det-alert {
+            margin: 1rem 1.25rem 0; padding: .75rem 1rem;
+            border-radius: 8px; border: 1px solid transparent;
+        }
+        .det-alert--danger {
+            background: var(--ux-danger-bg); border-color: #e8a09c; color: #3d1412;
+        }
+        .det-alert--warn {
+            background: #fffaf0; border-color: #e0c078; color: #5c3d00;
+            padding: 1rem;
+        }
+        .det-alert-title {
+            margin: 0 0 .5rem; font-size: .9rem; font-weight: 700;
+            display: flex; align-items: center; gap: .4rem;
+        }
+        .det-alert-chips {
+            display: flex; flex-wrap: wrap; gap: .35rem; margin: 0; padding: 0; list-style: none;
+        }
+        .det-alert-chips li {
+            font-size: .8rem; font-weight: 600; background: #fff;
+            border: 1px solid #e8a09c; color: var(--ux-danger);
+            border-radius: 999px; padding: .2rem .65rem;
+        }
+        .det-alert-note {
+            margin: .55rem 0 0; font-size: .8rem; opacity: .9; line-height: 1.35;
+        }
+
+        /* Classificação: opções contrastantes + rádio visível */
+        .det-classif-prompt {
+            margin: 0 0 .65rem; font-size: .85rem; color: #5c3d00; line-height: 1.35;
+        }
+        .det-choice {
+            display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin: 0 0 .85rem;
+        }
+        .det-choice-opt {
+            position: relative;
+            display: flex; flex-direction: column; gap: .25rem;
+            border: 2px solid #d0d0d0;
+            border-radius: 10px;
+            padding: .75rem .85rem .75rem 2.5rem;
+            cursor: pointer;
+            background: #fff;
+            color: var(--ux-text);
+            min-height: 72px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
+            transition: border-color .15s, background .15s, box-shadow .15s;
+        }
+        .det-choice-opt:hover {
+            border-color: var(--nb-primary, #FF9137);
+            box-shadow: 0 2px 6px rgba(255,145,55,.18);
+        }
+        .det-choice-opt::before {
+            content: "";
+            position: absolute; left: .85rem; top: .9rem;
+            width: 1.1rem; height: 1.1rem; border-radius: 50%;
+            border: 2px solid #888; background: #fff;
+            box-sizing: border-box;
+        }
+        .det-choice-opt.is-selected,
+        .det-choice-opt:has(input:checked) {
+            border-color: #d96a12;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255,145,55,.35);
+        }
+        .det-choice-opt.is-selected::before,
+        .det-choice-opt:has(input:checked)::before {
+            border-color: #d96a12;
+            background: #d96a12;
+            box-shadow: inset 0 0 0 3px #fff;
+        }
+        .det-choice-opt strong {
+            font-size: .95rem; color: var(--ux-text); line-height: 1.2;
+        }
+        .det-choice-opt span {
+            font-size: .78rem; line-height: 1.35; font-weight: 400;
+            color: var(--ux-text-secondary);
+        }
+        .det-choice-opt input {
+            position: absolute; opacity: 0; width: 1px; height: 1px;
+        }
+        .det-classif-actions {
+            display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+        }
+        .det-classif-hint {
+            font-size: .8rem; color: var(--ux-text-muted); margin: 0;
+        }
+        .det-classif-actions .nb-btn:disabled,
+        .det-classif-actions .nb-btn.is-disabled {
+            opacity: .45; cursor: not-allowed; pointer-events: none;
+        }
+
+        /* Abas: uma seção por vez */
+        .det-tabs {
+            display: flex; gap: 0; margin: 1rem 1.25rem 0;
+            border-bottom: 1px solid var(--ux-border);
+        }
+        .det-tab {
+            border: 0; background: transparent; cursor: pointer;
+            padding: .55rem 1rem; font-size: .875rem; font-weight: 600;
+            color: var(--ux-text-muted); border-bottom: 2px solid transparent;
+            margin-bottom: -1px; min-height: 40px;
+        }
+        .det-tab:hover { color: var(--ux-text); }
+        .det-tab.is-active {
+            color: #b35a12; border-bottom-color: var(--nb-primary, #FF9137);
+        }
+        .det-tab .det-tab-badge {
+            display: inline-block; margin-left: .3rem;
+            font-size: .65rem; font-weight: 700; min-width: 1.1rem;
+            padding: .05rem .3rem; border-radius: 999px;
+            background: var(--ux-danger); color: #fff; vertical-align: middle;
+        }
+        .det-panel { display: none; padding: 1rem 1.25rem 1.25rem; }
+        .det-panel.is-active { display: block; }
+
+        /* Campos em linhas label | valor */
+        .det-rows { margin: 0; padding: 0; list-style: none; }
+        .det-rows li {
+            display: grid; grid-template-columns: minmax(140px, 34%) 1fr;
+            gap: .75rem; align-items: center;
+            padding: .55rem 0; border-bottom: 1px solid #eee;
+        }
+        .det-rows li:last-child { border-bottom: 0; }
+        .det-rows .det-label {
+            font-size: .8rem; font-weight: 600; color: var(--ux-text-muted);
+        }
+        .det-rows .det-value {
+            font-size: .9rem; color: var(--ux-text); word-break: break-word; line-height: 1.35;
+        }
+
+        /* Pendente: um sinal claro, sem poluir (borda + fundo suave + pill outline) */
+        .det-rows li.is-pend {
+            background: #fff7f6;
+            border: 1px solid #f0d0cc;
+            border-left: 3px solid var(--ux-danger);
+            border-radius: 6px;
+            padding: .55rem .75rem;
+            margin: .4rem 0;
+            border-bottom: 1px solid #f0d0cc;
+        }
+        .det-rows li.is-pend + li.is-pend { margin-top: .35rem; }
+        .det-rows li.is-pend .det-value {
+            display: flex; align-items: center; flex-wrap: wrap; gap: .5rem;
+            color: var(--ux-text); font-weight: 500;
+        }
+        .det-pend-tag {
+            flex-shrink: 0;
+            font-size: .65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .02em;
+            color: var(--ux-danger);
+            background: #fff;
+            border: 1px solid #e8a09c;
+            border-radius: 999px;
+            padding: .15rem .5rem;
+            line-height: 1.2;
+        }
+
+        .ux-help-glossary {
+            margin: 0 0 1rem; padding: .75rem 1rem;
+            background: #f7f7f7; border-left: 3px solid #666; border-radius: 0 6px 6px 0;
+            font-size: .85rem; color: var(--ux-text-secondary); line-height: 1.45;
+        }
+        .ux-help-glossary summary {
+            cursor: pointer; font-weight: 600; color: var(--ux-text);
+        }
+        .ux-help-glossary[open] { background: #f0f0f0; }
+        .ux-help-glossary dl { margin: .5rem 0 0; }
+        .ux-help-glossary dt { font-weight: 700; margin-top: .4rem; color: var(--ux-text); }
+        .ux-help-glossary dd { margin: .15rem 0 0; }
+
+        /* Cabeçalho da grid: chips (pós-filtro) + page size ao lado do intervalo */
+        .ux-grid-headbar {
+            margin: 0 0 .65rem;
+            align-items: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+        }
+        .ux-status-summary {
+            display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+            flex: 1; min-width: 0;
+        }
+        .ux-status-summary[hidden] { display: none !important; }
+        .ux-chip-status {
+            display: inline-flex; align-items: center; gap: .35rem;
+            border: 1px solid var(--ux-border); background: #fff;
+            border-radius: 999px; padding: .3rem .75rem;
+            font-size: .8rem; color: var(--ux-text); cursor: pointer;
+            min-height: 34px;
+        }
+        .ux-chip-status:hover { border-color: var(--nb-primary, #FF9137); }
+        .ux-chip-status.is-active {
+            border-color: var(--nb-primary, #FF9137);
+            background: #fff4eb; font-weight: 600;
+        }
+        .ux-chip-status .ux-chip-count {
+            font-weight: 700; min-width: 1.1rem; text-align: center;
+        }
+        .ux-chip-status[data-status="Pendencia Contratual"] .ux-chip-dot { background: var(--ux-danger); }
+        .ux-chip-status[data-status="Pendencia Cadastral"] .ux-chip-dot { background: #c47a00; }
+        .ux-chip-status[data-status="Regular"] .ux-chip-dot { background: var(--ux-success); }
+        .ux-chip-status[data-status=""] .ux-chip-dot { background: #666; }
+        .ux-chip-dot {
+            width: .5rem; height: .5rem; border-radius: 50%; flex-shrink: 0;
+        }
+        .ux-page-controls {
+            display: inline-flex; align-items: center; gap: .65rem;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .ux-page-size {
+            display: inline-flex; align-items: center; margin: 0;
+            min-width: 130px; max-width: 160px;
+        }
+        .ux-page-size .nb-select,
+        .ux-page-size .select2-container { width: 100% !important; }
+        .ux-page-range {
+            font-size: .85rem; color: var(--ux-text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Container da tabela + rodapé (uma peça, cantos 8px) */
+        .ux-grid-shell {
+            border: 1px solid var(--nb-border, #e2e2e2);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            min-width: 0;
+            max-width: 100%;
+        }
+        .ux-grid-shell .nb-grid-scroll {
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            max-height: 60vh;
+        }
+        .ux-grid-shell .nb-grid {
+            border: 0;
+        }
+        .ux-grid-shell .nb-grid td,
+        .ux-grid-shell .nb-grid th {
+            border-left: 0;
+            border-right: 0;
+        }
+
+        /* Rodapé integrado à tabela */
+        .ux-grid-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem; flex-wrap: wrap;
+            margin: 0; padding: .75rem 1.25rem;
+            border-top: 1px solid var(--ux-border);
+            background: #fff;
+        }
+        .ux-grid-footer[hidden] { display: none !important; }
+        .ux-grid-footer .ux-page-range {
+            font-size: .875rem; color: var(--ux-text); font-weight: 500;
+        }
+        .ux-pager.grid-pager {
+            display: flex; flex-wrap: wrap; gap: 2px;
+            justify-content: flex-end; align-items: center;
+            margin: 0; padding: 0; border: 0;
+        }
+        .ux-pager.grid-pager a,
+        .ux-pager.grid-pager span {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 2rem; min-height: 2rem;
+            padding: 3px 8px; margin: 0 2px;
+            border-radius: var(--nb-radius, 4px);
+            font-size: 12px; text-decoration: none; text-align: center;
+            line-height: 1; box-sizing: border-box;
+        }
+        .ux-pager.grid-pager a[aria-disabled="true"] {
+            opacity: .35; pointer-events: none; cursor: default;
+        }
+        .ux-pager.grid-pager .ux-pager-ellipsis {
+            border: 0; background: transparent; color: var(--ux-text-muted);
+            cursor: default; min-width: 1.5rem;
+        }
+
+        @media (max-width: 720px) {
+            .ux-grid-footer { flex-direction: column; align-items: stretch; }
+            .ux-pager.grid-pager { justify-content: center; }
+        }
+
+        /* Ordenação de colunas (padrão do print: ▲ ao lado do título) */
+        .nb-grid thead th.ux-sortable {
+            cursor: pointer; user-select: none; white-space: nowrap;
+        }
+        .nb-grid thead th.ux-sortable:hover {
+            color: var(--nb-primary-dk, #c45f10);
+        }
+        .nb-grid thead th.ux-sortable .ux-sort-btn {
+            display: inline-flex; align-items: center; gap: .35rem;
+            border: 0; background: transparent; padding: 0; margin: 0;
+            font: inherit; color: inherit; cursor: pointer; text-align: inherit;
+            width: 100%;
+        }
+        .nb-grid thead th.ux-sortable .ux-sort-icon {
+            display: inline-block; font-size: .55rem; line-height: 1;
+            color: #9a9a9a; vertical-align: middle;
+            transition: transform .15s, color .15s;
+        }
+        .nb-grid thead th.ux-sortable:hover .ux-sort-icon { color: var(--nb-primary, #FF9137); }
+        .nb-grid thead th.is-sorted .ux-sort-icon {
+            color: var(--nb-primary-dk, #c45f10);
+        }
+        .nb-grid thead th.is-sorted-desc .ux-sort-icon {
+            transform: rotate(180deg);
+        }
+        .nb-grid thead th[style*="center"] .ux-sort-btn { justify-content: center; }
+        .nb-grid thead th[style*="left"] .ux-sort-btn { justify-content: flex-start; }
+
+        /* Confirmação enxuta */
+        #divConfirmClassif .nb-modal-box { max-width: 400px; }
+        #divConfirmClassif .nb-modal-body { padding: 1rem 1.25rem; }
+        #confirmMsg { margin: 0; line-height: 1.5; color: var(--ux-text); font-size: .95rem; }
+
+        @media (max-width: 720px) {
+            #divDetalhe .nb-modal-box { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+            .det-meta { grid-template-columns: 1fr; gap: .5rem; }
+            .det-meta-item + .det-meta-item { padding-left: 0; border-left: 0; padding-top: .4rem; border-top: 1px solid #e5e5e5; }
+            .det-choice { grid-template-columns: 1fr; }
+            .det-rows li { grid-template-columns: 1fr; gap: .15rem; }
+            .det-tabs { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body class="fundo_default">
+    <a class="ux-skip" href="#conteudoPrincipal">Ir para o conteúdo</a>
+
+    <div>
+        <div class="nb-page-wrap-double" id="conteudoPrincipal">
+
+            <div class="nb-profile-bar" role="group" aria-label="Simulação de perfil de acesso">
+                <div>
+                    <span class="ux-proto-tag">Protótipo</span>
+                    <span class="nb-profile-label">Simular perfil de acesso:</span>
+                </div>
+                <div class="nb-profile-switch" id="perfilSwitch" role="tablist" aria-label="Perfil">
+                    <button type="button" role="tab" data-perfil="demarco" class="active" aria-selected="true">Demarco</button>
+                    <button type="button" role="tab" data-perfil="cliente" aria-selected="false">Cliente</button>
+                </div>
+            </div>
+
+            <h1 class="nb-page-title">Gestão de Pré-Cadastro de Pedidos</h1>
+            <p class="nb-profile-hint" id="perfilHint" aria-live="polite">
+                Visão Demarco — todos os clientes e filtros disponíveis.
+            </p>
+
+            <details class="ux-help-glossary">
+                <summary>O que significa cada status?</summary>
+                <dl>
+                    <dt>Pendência Contratual</dt>
+                    <dd>O pedido aguarda classificação (Interno ou Externo) pelo perfil Cliente antes de seguir o fluxo.</dd>
+                    <dt>Pendência Cadastral</dt>
+                    <dd>Há dados do pedido que ainda não existem (ou não estão vinculados) no cadastro do sistema — fornecedor, unidade, gestor, etc.</dd>
+                    <dt>Regular</dt>
+                    <dd>Pedido apto a seguir o fluxo operacional sem bloqueios cadastrais ou de classificação.</dd>
+                </dl>
+            </details>
+
+            <!-- Filtros -->
+            <fieldset>
+                <legend>Filtros</legend>
+                <form id="frmFiltros" class="nb-form nb-form--narrow" novalidate>
+                    <div class="nb-form-row nb-form-row--1col">
+                        <div class="nb-field" id="campoCliente">
+                            <label class="nb-field-label" for="fltCliente">Cliente</label>
+                            <select id="fltCliente" class="nb-select nb-select--search" aria-describedby="fltClienteHelp">
+                                <option value="">Todos</option>
+                            </select>
+                            <span id="fltClienteHelp" class="ux-sr-only">No perfil Cliente este campo fica fixo na sua empresa.</span>
+                        </div>
+                    </div>
+                    <div class="nb-form-row nb-form-row--1col">
+                        <div class="nb-field">
+                            <label class="nb-field-label" for="fltDocumento">Documento de Compra</label>
+                            <input type="text" id="fltDocumento" class="nb-input" maxlength="30"
+                                   placeholder="Ex.: 4500012345" autocomplete="off"
+                                   inputmode="numeric" />
+                        </div>
+                    </div>
+                    <div class="nb-form-row nb-form-row--1col">
+                        <div class="nb-field">
+                            <label class="nb-field-label" for="fltUnidade">Unidade</label>
+                            <select id="fltUnidade" class="nb-select nb-select--search">
+                                <option value="">Todos</option>
+                                <option value="Unidade Pedro Leopoldo">Unidade Pedro Leopoldo</option>
+                                <option value="Agregados Barueri">Agregados Barueri</option>
+                                <option value="Agregados Cajamar">Agregados Cajamar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="nb-form-row nb-form-row--1col">
+                        <div class="nb-field">
+                            <label class="nb-field-label" for="fltFornecedor">Fornecedor</label>
+                            <select id="fltFornecedor" class="nb-select nb-select--search">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="nb-form-row nb-form-row--1col">
+                        <div class="nb-field">
+                            <label class="nb-field-label" for="fltStatus">Status</label>
+                            <select id="fltStatus" class="nb-select">
+                                <option value="">Todos</option>
+                                <option value="Pendencia Contratual">Pendência Contratual</option>
+                                <option value="Pendencia Cadastral">Pendência Cadastral</option>
+                                <option value="Regular">Regular</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="nb-form-actions nb-form-actions--center">
+                        <button type="submit" id="btnFiltrar" class="nb-btn" disabled aria-disabled="true">Filtrar</button>
+                        <button type="button" id="btnLimpar" class="nb-btn nb-btn--secondary">Limpar filtros</button>
+                    </div>
+                    <div class="ux-active-filters" id="filtrosAtivos" aria-label="Filtros ativos"></div>
+                </form>
+            </fieldset>
+
+            <div class="ux-sr-only" id="liveResultados" aria-live="polite" aria-atomic="true"></div>
+
+            <fieldset style="margin-top:40px">
+                <legend>Pedidos</legend>
+                <div class="nb-toolbar nb-toolbar--between ux-grid-headbar">
+                    <div class="ux-status-summary" id="statusSummary" aria-label="Filtrar por status" hidden></div>
+                    <div class="ux-page-controls">
+                        <button type="button" id="btnExportar" class="nb-btn nb-btn--secondary"
+                                title="Exporta os pedidos da listagem atual"
+                                disabled aria-disabled="true">Exportar Excel</button>
+                        <label class="ux-page-size" for="selPageSize">
+                            <span class="ux-sr-only">Itens por página</span>
+                            <select id="selPageSize" class="nb-select" aria-label="Itens por página">
+                                <option value="10" selected>Exibir 10</option>
+                                <option value="20">Exibir 20</option>
+                                <option value="30">Exibir 30</option>
+                                <option value="40">Exibir 40</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="ux-grid-shell">
+                    <div class="nb-grid-scroll" role="region" aria-label="Lista de pedidos" tabindex="0">
+                        <table class="nb-grid" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align:center;width:88px">Ações</th>
+                                    <th scope="col" class="ux-sortable" style="text-align:left" data-sort="documento" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Documento de Compra <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:left" data-sort="fornecedor" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Fornecedor <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:left" data-sort="unidade" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Unidade <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:left" data-sort="gestor" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Gestor do Contrato <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInclusao" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Data de Inclusão <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:center" data-sort="status" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Status <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="gridBody"></tbody>
+                        </table>
+                        <div id="gridVazio" class="nb-empty-state" role="status">
+                            <span class="nb-empty-state-icon" aria-hidden="true">⌀</span>
+                            <strong>Nenhuma consulta realizada</strong><br />
+                            Selecione os filtros desejados e clique em <strong>Filtrar</strong>.
+                        </div>
+                    </div>
+                    <div class="ux-grid-footer" id="gridFooter" hidden>
+                        <span class="ux-page-range" id="pageRange" aria-live="polite"></span>
+                        <nav class="grid-pager ux-pager" id="gridPager" aria-label="Paginação da lista"></nav>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+
+    <!-- Modal: detalhe -->
+    <div id="divDetalhe" class="nb-modal-wrap" role="dialog" aria-modal="true"
+         aria-labelledby="detTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="detTitulo">Detalhes do Pedido</span>
+                <span id="detStatus" style="margin-left:auto"></span>
+                <button type="button" class="nb-modal-close" id="detFechar"
+                        aria-label="Fechar detalhes do pedido">&#215;</button>
+            </div>
+            <div class="nb-modal-body" id="detBody" tabindex="-1"></div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="detFechar2">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: confirmação de classificação -->
+    <div id="divConfirmClassif" class="nb-modal-wrap" role="dialog" aria-modal="true"
+         aria-labelledby="confirmTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="confirmTitulo">Confirmar classificação</span>
+                <button type="button" class="nb-modal-close" id="confirmFechar" aria-label="Cancelar">&#215;</button>
+            </div>
+            <div class="nb-modal-body">
+                <p id="confirmMsg" style="margin:0;line-height:1.45;color:#1a1a1a"></p>
+            </div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="confirmCancelar">Cancelar</button>
+                <button type="button" class="nb-btn" id="confirmOk">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/Scripts/jquery-4.0.0.min.js"></script>
+    <script src="assets/Scripts/jquery-ui-1.14.1.min.js"></script>
+    <script src="assets/Scripts/jquery.mask.min.js"></script>
+    <script src="assets/Scripts/select2.min.js"></script>
+    <script src="assets/Scripts/utils.js"></script>
+    <script src="assets/Scripts/NovoBancodocComponents.js"></script>
+    <script src="assets/Scripts/nb-mock.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
