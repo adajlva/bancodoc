@@ -29,23 +29,23 @@
     ]);
 
     nbMock.reset('pedidos', [
-        { id: 1,  clienteId: 1, documento: '4500012345', fornecedorId: 1, unidade: 'Unidade Pedro Leopoldo', gestor: 'Carlos Andrade',  dataInclusao: '05/05/2026', status: 'Pendencia Cadastral' },
-        { id: 2,  clienteId: 1, documento: '4500012346', fornecedorId: 2, unidade: 'Agregados Barueri',       gestor: 'Fernanda Lima',   dataInclusao: '06/05/2026', status: 'Regular' },
-        { id: 3,  clienteId: 1, documento: '4500012347', fornecedorId: 3, unidade: 'Agregados Cajamar',       gestor: 'Rafael Souza',    dataInclusao: '07/05/2026', status: 'Pendencia Contratual' },
-        { id: 4,  clienteId: 1, documento: '4500012351', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', gestor: 'Carlos Andrade',  dataInclusao: '08/05/2026', status: 'Regular' },
-        { id: 5,  clienteId: 1, documento: '4500012358', fornecedorId: 5, unidade: 'Agregados Barueri',       gestor: 'Juliana Prado',   dataInclusao: '11/05/2026', status: 'Pendencia Cadastral' },
-        { id: 6,  clienteId: 1, documento: '4500012360', fornecedorId: 6, unidade: 'Agregados Cajamar',       gestor: 'Rafael Souza',    dataInclusao: '12/05/2026', status: 'Pendencia Contratual' },
-        { id: 7,  clienteId: 1, documento: '4500012372', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', gestor: 'Fernanda Lima',   dataInclusao: '13/05/2026', status: 'Regular' },
-        { id: 8,  clienteId: 1, documento: '4500012385', fornecedorId: 1, unidade: 'Agregados Cajamar',       gestor: 'Juliana Prado',   dataInclusao: '14/05/2026', status: 'Pendencia Cadastral' },
-        { id: 9,  clienteId: 1, documento: '4500012390', fornecedorId: 3, unidade: 'Agregados Barueri',       gestor: 'Carlos Andrade',  dataInclusao: '15/05/2026', status: 'Regular' },
-        { id: 10, clienteId: 1, documento: '4500012404', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', gestor: 'Marcos Oliveira', dataInclusao: '18/05/2026', status: 'Pendencia Contratual' },
-        { id: 11, clienteId: 1, documento: '4500012417', fornecedorId: 5, unidade: 'Agregados Cajamar',       gestor: 'Rafael Souza',    dataInclusao: '19/05/2026', status: 'Regular' },
-        { id: 12, clienteId: 1, documento: '4500012421', fornecedorId: 6, unidade: 'Agregados Barueri',       gestor: 'Patrícia Nunes',  dataInclusao: '20/05/2026', status: 'Pendencia Cadastral' },
-        { id: 13, clienteId: 1, documento: '4500012438', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', gestor: 'Fernanda Lima',   dataInclusao: '21/05/2026', status: 'Pendencia Contratual' },
-        { id: 14, clienteId: 1, documento: '4500012445', fornecedorId: 1, unidade: 'Agregados Barueri',       gestor: 'Juliana Prado',   dataInclusao: '22/05/2026', status: 'Regular' },
-        { id: 15, clienteId: 1, documento: '4500012456', fornecedorId: 3, unidade: 'Agregados Cajamar',       gestor: 'Carlos Andrade',  dataInclusao: '25/05/2026', status: 'Pendencia Cadastral' },
-        { id: 16, clienteId: 2, documento: '7800045501', fornecedorId: 1, unidade: 'Agregados Barueri',       gestor: 'Marcos Oliveira', dataInclusao: '10/05/2026', status: 'Regular' },
-        { id: 17, clienteId: 3, documento: '9900078820', fornecedorId: 3, unidade: 'Agregados Cajamar',       gestor: 'Patrícia Nunes',  dataInclusao: '21/05/2026', status: 'Regular' }
+        { id: 1,  clienteId: 1, documento: '4500012345', fornecedorId: 1, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], gestor: 'Carlos Andrade',  dataInclusao: '05/05/2026', dataInicio: '10/05/2026', status: 'Pendencia Cadastral' },
+        { id: 2,  clienteId: 1, documento: '4500012346', fornecedorId: 2, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri'], gestor: 'Fernanda Lima',   dataInclusao: '06/05/2026', dataInicio: '12/05/2026', status: 'Regular' },
+        { id: 3,  clienteId: 1, documento: '4500012347', fornecedorId: 3, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo', 'Agregados Barueri'], gestor: 'Rafael Souza',    dataInclusao: '07/05/2026', dataInicio: '15/05/2026', status: 'Pendencia Contratual' },
+        { id: 4,  clienteId: 1, documento: '4500012351', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], gestor: 'Carlos Andrade',  dataInclusao: '08/05/2026', dataInicio: '08/05/2026', status: 'Regular' },
+        { id: 5,  clienteId: 1, documento: '4500012358', fornecedorId: 5, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri', 'Agregados Cajamar'], gestor: 'Juliana Prado',   dataInclusao: '11/05/2026', dataInicio: '20/05/2026', status: 'Pendencia Cadastral' },
+        { id: 6,  clienteId: 1, documento: '4500012360', fornecedorId: 6, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar'], gestor: 'Rafael Souza',    dataInclusao: '12/05/2026', dataInicio: '01/06/2026', status: 'Pendencia Contratual' },
+        { id: 7,  clienteId: 1, documento: '4500012372', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Cajamar'], gestor: 'Fernanda Lima',   dataInclusao: '13/05/2026', dataInicio: '18/05/2026', status: 'Regular' },
+        { id: 8,  clienteId: 1, documento: '4500012385', fornecedorId: 1, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar'], gestor: 'Juliana Prado',   dataInclusao: '14/05/2026', dataInicio: '25/05/2026', status: 'Pendencia Cadastral' },
+        { id: 9,  clienteId: 1, documento: '4500012390', fornecedorId: 3, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri', 'Unidade Pedro Leopoldo'], gestor: 'Carlos Andrade',  dataInclusao: '15/05/2026', dataInicio: '22/05/2026', status: 'Regular' },
+        { id: 10, clienteId: 1, documento: '4500012404', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], gestor: 'Marcos Oliveira', dataInclusao: '18/05/2026', dataInicio: '02/06/2026', status: 'Pendencia Contratual' },
+        { id: 11, clienteId: 1, documento: '4500012417', fornecedorId: 5, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar', 'Agregados Barueri', 'Unidade Pedro Leopoldo'], gestor: 'Rafael Souza',    dataInclusao: '19/05/2026', dataInicio: '19/05/2026', status: 'Regular' },
+        { id: 12, clienteId: 1, documento: '4500012421', fornecedorId: 6, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri'], gestor: 'Patrícia Nunes',  dataInclusao: '20/05/2026', dataInicio: '28/05/2026', status: 'Pendencia Cadastral' },
+        { id: 13, clienteId: 1, documento: '4500012438', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], gestor: 'Fernanda Lima',   dataInclusao: '21/05/2026', dataInicio: '05/06/2026', status: 'Pendencia Contratual' },
+        { id: 14, clienteId: 1, documento: '4500012445', fornecedorId: 1, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri'], gestor: 'Juliana Prado',   dataInclusao: '22/05/2026', dataInicio: '01/06/2026', status: 'Regular' },
+        { id: 15, clienteId: 1, documento: '4500012456', fornecedorId: 3, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo'], gestor: 'Carlos Andrade',  dataInclusao: '25/05/2026', dataInicio: '10/06/2026', status: 'Pendencia Cadastral' },
+        { id: 16, clienteId: 2, documento: '7800045501', fornecedorId: 1, unidade: 'Agregados Barueri',       unidades: ['Agregados Barueri', 'Agregados Cajamar'], gestor: 'Marcos Oliveira', dataInclusao: '10/05/2026', dataInicio: '15/05/2026', status: 'Regular' },
+        { id: 17, clienteId: 3, documento: '9900078820', fornecedorId: 3, unidade: 'Agregados Cajamar',       unidades: ['Agregados Cajamar'], gestor: 'Patrícia Nunes',  dataInclusao: '21/05/2026', dataInicio: '30/05/2026', status: 'Regular' }
     ]);
 
     var CLIENTE_LOGADO_ID = 1;
@@ -93,6 +93,17 @@
         return PEND_CAD[p.id] || ['fornecedor'];
     }
 
+    function unidadesDoPedido(p) {
+        if (p.unidades && p.unidades.length) return p.unidades.slice();
+        return p.unidade ? [p.unidade] : [];
+    }
+
+    var COD_SAP = {
+        'Unidade Pedro Leopoldo': 'SAP1001',
+        'Agregados Barueri': 'SAP2002',
+        'Agregados Cajamar': 'SAP3003'
+    };
+
     function esc(v) {
         return String(v == null ? '' : v)
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -110,10 +121,6 @@
     function nomeFornecedor(id) {
         var f = nbMock.getSync('fornecedores', id);
         return f ? f.nome : '-';
-    }
-    function nomeCliente(id) {
-        var c = nbMock.getSync('clientes', id);
-        return c ? c.nome : '-';
     }
     function formatarData(br) {
         if (!br) return '-';
@@ -163,13 +170,13 @@
 
     function buildDetalhe(p) {
         var nome = nomeFornecedor(p.fornecedorId);
-        var codSap = { 'Unidade Pedro Leopoldo': 'SAP1001', 'Agregados Barueri': 'SAP2002', 'Agregados Cajamar': 'SAP3003' };
+        var uns = unidadesDoPedido(p);
         var endereco = 'Av. das Indústrias, ' + (1000 + p.id) + ' - Galpão ' + p.fornecedorId +
                        ', Distrito Industrial, Contagem/MG, CEP 32010-0' + ('0' + p.id).slice(-2);
         return {
             id: p.id,
             numeroPedido: p.documento,
-            dataInicioPedido: formatarData(p.dataInclusao),
+            dataInicioPedido: formatarData(p.dataInicio || p.dataInclusao),
             dataFimPedido: '31/12/26',
             status: p.status,
             pendencias: pendenciasDoPedido(p),
@@ -185,7 +192,7 @@
                 emailContraparte: 'contraparte.grupocsn@csn.com.br',
                 gestorContrato: nomeParaEmailCsn(p.gestor),
                 comprador: nomeParaEmailCsn(COMPRADORES[(p.fornecedorId - 1) % COMPRADORES.length]),
-                unidades: [codSap[p.unidade] || 'SAP0000']
+                unidades: uns.map(function (u) { return COD_SAP[u] || 'SAP0000'; })
             }
         };
     }
@@ -417,27 +424,8 @@
         $('#pageRange').text('');
         $('#gridPager').empty().attr('hidden', true);
         $('#pagerTop').attr('hidden', true);
-        $('#filtrosAtivos').empty();
         $('#statusSummary').empty().attr('hidden', true);
         atualizarBotaoExportar();
-    }
-
-    function renderFiltrosAtivos(f) {
-        var chips = [];
-        function add(key, label, valueText) {
-            chips.push(
-                '<span class="ux-filter-chip">' +
-                    '<span>' + esc(label) + ': <strong>' + esc(valueText) + '</strong></span>' +
-                    '<button type="button" data-clear="' + esc(key) + '" aria-label="Remover filtro ' + esc(label) + '">×</button>' +
-                '</span>'
-            );
-        }
-        if (f.cliente && perfil !== 'cliente') add('cliente', 'Cliente', nomeCliente(f.cliente));
-        if (f.documento) add('documento', 'Documento', f.documento);
-        if (f.unidade) add('unidade', 'Unidade', f.unidade);
-        if (f.fornecedor) add('fornecedor', 'Fornecedor', nomeFornecedor(f.fornecedor));
-        if (f.status) add('status', 'Status', STATUS_LABEL[f.status] || f.status);
-        $('#filtrosAtivos').html(chips.join(''));
     }
 
     function totalPages() {
@@ -541,8 +529,9 @@
             case 'unidade': return String(p.unidade || '').toLowerCase();
             case 'gestor': return nomeParaEmailCsn(p.gestor).toLowerCase();
             case 'status': return prioridadeStatus(p.status);
-            case 'dataInclusao': {
-                var parts = String(p.dataInclusao || '').split('/');
+            case 'dataInclusao':
+            case 'dataInicio': {
+                var parts = String((key === 'dataInicio' ? p.dataInicio : p.dataInclusao) || '').split('/');
                 if (parts.length !== 3) return 0;
                 return (parseInt(parts[2], 10) * 10000) +
                     (parseInt(parts[1], 10) * 100) +
@@ -601,6 +590,7 @@
         var total = filteredRows.length;
 
         if (!total) {
+            fecharPopUnidades();
             $('#gridVazio').html(
                 '<span class="nb-empty-state-icon" aria-hidden="true">⌀</span>' +
                 '<strong>Nenhum pedido encontrado</strong><br />' +
@@ -612,17 +602,27 @@
             return;
         }
 
+        fecharPopUnidades();
         $('#gridVazio').hide();
         var start = (currentPage - 1) * pageSize;
         var slice = filteredRows.slice(start, start + pageSize);
 
         slice.forEach(function (p) {
             var pend = pendenciasDoPedido(p);
+            var uns = unidadesDoPedido(p);
             var pendHtml = pend.length
                 ? '<span class="ux-pend-count" title="' + esc(pend.map(function (k) { return PEND_LABEL[k]; }).join('; ')) + '">' +
                       pend.length + (pend.length === 1 ? ' pendência' : ' pendências') +
                   '</span>'
                 : '';
+            var unidadeCell = uns.length > 1
+                ? '<button type="button" class="nb-grid-icon-btn btn-unidades" data-id="' + p.id + '"' +
+                  ' title="Ver ' + uns.length + ' unidades do documento ' + esc(p.documento) + '"' +
+                  ' aria-label="Ver ' + uns.length + ' unidades do documento ' + esc(p.documento) + '"' +
+                  ' aria-haspopup="dialog" aria-expanded="false">' +
+                      '<span class="nb-icon nb-icon--view" aria-hidden="true"></span>' +
+                  '</button>'
+                : esc(uns[0] || p.unidade || '-');
             $body.append(
                 '<tr>' +
                     '<td style="text-align:center;white-space:nowrap">' +
@@ -638,9 +638,10 @@
                         '</button>' + pendHtml +
                     '</td>' +
                     '<td style="text-align:left">' + esc(nomeFornecedor(p.fornecedorId)) + '</td>' +
-                    '<td style="text-align:left">' + esc(p.unidade || '-') + '</td>' +
+                    '<td style="text-align:left">' + unidadeCell + '</td>' +
                     '<td style="text-align:left">' + esc(nomeParaEmailCsn(p.gestor)) + '</td>' +
                     '<td style="text-align:center">' + esc(p.dataInclusao || '-') + '</td>' +
+                    '<td style="text-align:center">' + esc(p.dataInicio || '-') + '</td>' +
                     '<td style="text-align:center">' + badgeStatus(p.status) + '</td>' +
                 '</tr>'
             );
@@ -654,13 +655,12 @@
 
     async function filtrar() {
         var f = lerFiltros();
-        renderFiltrosAtivos(f);
         consultaAtiva = true;
 
         filteredRows = await nbMock.list('pedidos', function (p) {
             if (f.cliente && String(p.clienteId) !== String(f.cliente)) return false;
             if (f.documento && String(p.documento).toLowerCase().indexOf(f.documento) === -1) return false;
-            if (f.unidade && p.unidade !== f.unidade) return false;
+            if (f.unidade && unidadesDoPedido(p).indexOf(f.unidade) === -1) return false;
             if (f.fornecedor && String(p.fornecedorId) !== String(f.fornecedor)) return false;
             if (f.status && p.status !== f.status) return false;
             return true;
@@ -671,18 +671,44 @@
         syncStatusChips(f.status);
     }
 
-    function limparFiltro(key) {
-        if (key === 'cliente' && perfil !== 'cliente') {
-            $('#fltCliente').val('').trigger('change');
-        } else if (key === 'documento') {
-            $('#fltDocumento').val('');
-        } else if (key === 'unidade') {
-            $('#fltUnidade').val('').trigger('change');
-        } else if (key === 'fornecedor') {
-            $('#fltFornecedor').val('').trigger('change');
-        } else if (key === 'status') {
-            $('#fltStatus').val('').trigger('change');
+    function fecharPopUnidades() {
+        var $pop = $('#popUnidades');
+        if ($pop.attr('hidden') != null) return;
+        $pop.attr('hidden', true).empty();
+        $('.btn-unidades[aria-expanded="true"]').attr('aria-expanded', 'false');
+    }
+
+    function abrirPopUnidades(btn, p) {
+        var uns = unidadesDoPedido(p);
+        var $pop = $('#popUnidades');
+        var $btn = $(btn);
+        var mesmo = $btn.attr('aria-expanded') === 'true';
+
+        fecharPopUnidades();
+        if (mesmo) return;
+
+        var items = uns.map(function (u) {
+            return '<li>' + esc(u) +
+                (COD_SAP[u] ? ' <span class="nb-badge nb-badge--muted">' + esc(COD_SAP[u]) + '</span>' : '') +
+                '</li>';
+        }).join('');
+
+        $pop.html(
+            '<strong>' + uns.length + ' unidades</strong>' +
+            '<ul>' + items + '</ul>'
+        ).removeAttr('hidden');
+
+        $btn.attr('aria-expanded', 'true');
+
+        var rect = btn.getBoundingClientRect();
+        var popW = $pop.outerWidth();
+        var popH = $pop.outerHeight();
+        var left = Math.min(rect.left, window.innerWidth - popW - 8);
+        var top = rect.bottom + 6;
+        if (top + popH > window.innerHeight - 8) {
+            top = Math.max(8, rect.top - popH - 6);
         }
+        $pop.css({ left: Math.max(8, left) + 'px', top: top + 'px' });
     }
 
     function limpar() {
@@ -715,7 +741,7 @@
         var base = await nbMock.list('pedidos', function (p) {
             if (f.cliente && String(p.clienteId) !== String(f.cliente)) return false;
             if (f.documento && String(p.documento).toLowerCase().indexOf(f.documento) === -1) return false;
-            if (f.unidade && p.unidade !== f.unidade) return false;
+            if (f.unidade && unidadesDoPedido(p).indexOf(f.unidade) === -1) return false;
             if (f.fornecedor && String(p.fornecedorId) !== String(f.fornecedor)) return false;
             return true;
         });
@@ -805,17 +831,6 @@
             atualizarBotaoFiltrar();
             nbMock.toast('msgSucesso', 'Filtros limpos.');
         });
-        $('#filtrosAtivos').on('click', 'button[data-clear]', function () {
-            limparFiltro($(this).data('clear'));
-            var f = lerFiltros();
-            var semFiltroExtra = !f.documento && !f.unidade && !f.fornecedor && !f.status;
-            if (perfil === 'demarco' && !f.cliente && semFiltroExtra) {
-                limparResultados();
-            } else {
-                filtrar();
-            }
-            atualizarBotaoFiltrar();
-        });
         $('#statusSummary').on('click', '.ux-chip-status', function () {
             var st = $(this).attr('data-status');
             $('#fltStatus').val(st).trigger('change');
@@ -853,8 +868,22 @@
             aplicarPerfil($(this).data('perfil'));
         });
         $('#gridBody').on('click', '.btn-ver', function () {
+            fecharPopUnidades();
             abrirDetalhe($(this).data('id'));
         });
+        $('#gridBody').on('click', '.btn-unidades', function (e) {
+            e.stopPropagation();
+            var id = $(this).data('id');
+            var p = filteredRows.filter(function (r) { return r.id === id; })[0] ||
+                    nbMock.getSync('pedidos', id);
+            if (p) abrirPopUnidades(this, p);
+        });
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#popUnidades, .btn-unidades').length) {
+                fecharPopUnidades();
+            }
+        });
+        $(window).on('scroll resize', fecharPopUnidades);
         $('#detBody').on('click', '#btnClassificar', function () {
             solicitarClassificar($(this).data('id'));
         });
@@ -880,7 +909,10 @@
 
         $(document).on('keydown', function (e) {
             if (e.key !== 'Escape') return;
-            if ($('#divConfirmClassif').is(':visible')) {
+            if ($('#popUnidades').attr('hidden') == null) {
+                fecharPopUnidades();
+                e.preventDefault();
+            } else if ($('#divConfirmClassif').is(':visible')) {
                 fecharConfirm();
                 e.preventDefault();
             } else if ($('#divGlossarioStatus').is(':visible')) {
