@@ -125,24 +125,16 @@
             -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
             mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
         }
-        .ux-unidades-pop {
-            position: fixed; z-index: 100020;
-            min-width: 220px; max-width: 320px;
-            background: #fff; border: 1px solid var(--ux-border);
-            border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.12);
-            padding: .65rem .85rem; font-size: .875rem; color: var(--ux-text);
-        }
-        .ux-unidades-pop strong {
-            display: block; font-size: .75rem; text-transform: uppercase;
-            letter-spacing: .03em; color: var(--ux-text-muted); margin-bottom: .4rem;
-        }
-        .ux-unidades-pop ul {
+        #divUnidades .nb-modal-box { max-width: 480px; width: 92vw; }
+        .ux-unidades-lista {
             margin: 0; padding: 0; list-style: none;
         }
-        .ux-unidades-pop li {
-            padding: .3rem 0; border-bottom: 1px solid #eee; line-height: 1.3;
+        .ux-unidades-lista li {
+            display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+            padding: .65rem 0; border-bottom: 1px solid #eee; font-size: .9rem; color: var(--ux-text);
         }
-        .ux-unidades-pop li:last-child { border-bottom: 0; padding-bottom: 0; }
+        .ux-unidades-lista li:last-child { border-bottom: 0; padding-bottom: 0; }
+        .ux-unidades-lista li:first-child { padding-top: 0; }
         .ux-pend-count {
             display: inline-flex; align-items: center; gap: .25rem;
             margin-left: .35rem; font-size: .75rem; font-weight: 700;
@@ -678,8 +670,22 @@
                 <nav class="grid-pager ux-pager" id="gridPager" aria-label="Paginação da lista" hidden></nav>
             </fieldset>
 
-            <div id="popUnidades" class="ux-unidades-pop" role="dialog" aria-label="Unidades do documento" hidden></div>
+        </div>
+    </div>
 
+    <!-- Modal: unidades do documento -->
+    <div id="divUnidades" class="nb-modal-wrap" role="dialog" aria-modal="true"
+         aria-labelledby="unidadesTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="unidadesTitulo">Unidades do documento</span>
+                <button type="button" class="nb-modal-close" id="unidadesFechar"
+                        aria-label="Fechar">&#215;</button>
+            </div>
+            <div class="nb-modal-body" id="unidadesBody" tabindex="-1"></div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="unidadesFechar2">Fechar</button>
+            </div>
         </div>
     </div>
 

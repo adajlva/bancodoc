@@ -590,7 +590,6 @@
         var total = filteredRows.length;
 
         if (!total) {
-            fecharPopUnidades();
             $('#gridVazio').html(
                 '<span class="nb-empty-state-icon" aria-hidden="true">⌀</span>' +
                 '<strong>Nenhum pedido encontrado</strong><br />' +
@@ -602,7 +601,6 @@
             return;
         }
 
-        fecharPopUnidades();
         $('#gridVazio').hide();
         var start = (currentPage - 1) * pageSize;
         var slice = filteredRows.slice(start, start + pageSize);
@@ -618,8 +616,7 @@
             var unidadeCell = uns.length > 1
                 ? '<button type="button" class="nb-grid-icon-btn btn-unidades" data-id="' + p.id + '"' +
                   ' title="Ver ' + uns.length + ' unidades do documento ' + esc(p.documento) + '"' +
-                  ' aria-label="Ver ' + uns.length + ' unidades do documento ' + esc(p.documento) + '"' +
-                  ' aria-haspopup="dialog" aria-expanded="false">' +
+                  ' aria-label="Ver ' + uns.length + ' unidades do documento ' + esc(p.documento) + '">' +
                       '<span class="nb-icon nb-icon--view" aria-hidden="true"></span>' +
                   '</button>'
                 : esc(uns[0] || p.unidade || '-');
@@ -671,44 +668,32 @@
         syncStatusChips(f.status);
     }
 
-    function fecharPopUnidades() {
-        var $pop = $('#popUnidades');
-        if ($pop.attr('hidden') != null) return;
-        $pop.attr('hidden', true).empty();
-        $('.btn-unidades[aria-expanded="true"]').attr('aria-expanded', 'false');
+    function fecharModalUnidades() {
+        closeModal('divUnidades');
+        if (lastFocusEl && typeof lastFocusEl.focus === 'function') {
+            try { lastFocusEl.focus(); } catch (e) {}
+        }
     }
 
-    function abrirPopUnidades(btn, p) {
+    function abrirModalUnidades(p) {
+        lastFocusEl = document.activeElement;
         var uns = unidadesDoPedido(p);
-        var $pop = $('#popUnidades');
-        var $btn = $(btn);
-        var mesmo = $btn.attr('aria-expanded') === 'true';
-
-        fecharPopUnidades();
-        if (mesmo) return;
-
         var items = uns.map(function (u) {
-            return '<li>' + esc(u) +
-                (COD_SAP[u] ? ' <span class="nb-badge nb-badge--muted">' + esc(COD_SAP[u]) + '</span>' : '') +
+            return '<li>' +
+                '<span>' + esc(u) + '</span>' +
+                (COD_SAP[u] ? '<span class="nb-badge nb-badge--muted">' + esc(COD_SAP[u]) + '</span>' : '') +
                 '</li>';
         }).join('');
 
-        $pop.html(
-            '<strong>' + uns.length + ' unidades</strong>' +
-            '<ul>' + items + '</ul>'
-        ).removeAttr('hidden');
-
-        $btn.attr('aria-expanded', 'true');
-
-        var rect = btn.getBoundingClientRect();
-        var popW = $pop.outerWidth();
-        var popH = $pop.outerHeight();
-        var left = Math.min(rect.left, window.innerWidth - popW - 8);
-        var top = rect.bottom + 6;
-        if (top + popH > window.innerHeight - 8) {
-            top = Math.max(8, rect.top - popH - 6);
-        }
-        $pop.css({ left: Math.max(8, left) + 'px', top: top + 'px' });
+        $('#unidadesTitulo').text('Unidades — documento ' + (p.documento || ''));
+        $('#unidadesBody').html(
+            '<p style="margin:0 0 .75rem;font-size:.875rem;color:#4a4a4a">' +
+                uns.length + (uns.length === 1 ? ' unidade vinculada' : ' unidades vinculadas') +
+            ' a este documento de compra.</p>' +
+            '<ul class="ux-unidades-lista">' + items + '</ul>'
+        );
+        openModal('divUnidades');
+        setTimeout(function () { $('#unidadesBody').trigger('focus'); }, 50);
     }
 
     function limpar() {
@@ -868,22 +853,14 @@
             aplicarPerfil($(this).data('perfil'));
         });
         $('#gridBody').on('click', '.btn-ver', function () {
-            fecharPopUnidades();
             abrirDetalhe($(this).data('id'));
         });
-        $('#gridBody').on('click', '.btn-unidades', function (e) {
-            e.stopPropagation();
+        $('#gridBody').on('click', '.btn-unidades', function () {
             var id = $(this).data('id');
             var p = filteredRows.filter(function (r) { return r.id === id; })[0] ||
                     nbMock.getSync('pedidos', id);
-            if (p) abrirPopUnidades(this, p);
+            if (p) abrirModalUnidades(p);
         });
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('#popUnidades, .btn-unidades').length) {
-                fecharPopUnidades();
-            }
-        });
-        $(window).on('scroll resize', fecharPopUnidades);
         $('#detBody').on('click', '#btnClassificar', function () {
             solicitarClassificar($(this).data('id'));
         });
@@ -900,6 +877,7 @@
         $('#glossarioFechar, #glossarioFechar2').on('click', function () {
             closeModal('divGlossarioStatus');
         });
+        $('#unidadesFechar, #unidadesFechar2').on('click', fecharModalUnidades);
         $('#detFechar, #detFechar2').on('click', fecharDetalhe);
         $('#confirmFechar, #confirmCancelar').on('click', fecharConfirm);
         $('#confirmOk').on('click', function () {
@@ -909,11 +887,11 @@
 
         $(document).on('keydown', function (e) {
             if (e.key !== 'Escape') return;
-            if ($('#popUnidades').attr('hidden') == null) {
-                fecharPopUnidades();
-                e.preventDefault();
-            } else if ($('#divConfirmClassif').is(':visible')) {
+            if ($('#divConfirmClassif').is(':visible')) {
                 fecharConfirm();
+                e.preventDefault();
+            } else if ($('#divUnidades').is(':visible')) {
+                fecharModalUnidades();
                 e.preventDefault();
             } else if ($('#divGlossarioStatus').is(':visible')) {
                 closeModal('divGlossarioStatus');
