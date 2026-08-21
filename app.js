@@ -9,18 +9,19 @@
         AdicionarTermo({ Sigla: 'Selecione', Valor: 'Selecione' });
     }
 
-    nbMock.config({ minDelay: 350, maxDelay: 900, prefix: 'nbmock_prepedidos_ux_v15_' });
+    nbMock.config({ minDelay: 350, maxDelay: 900, prefix: 'nbmock_prepedidos_ux_v16_' });
 
     var CSN_ID = 1;
     var CLIENTE_LOGADO_ID = CSN_ID;
 
-    nbMock.seed('clientes', [
+    /* reset (não seed): evita nomes antigos/corrompidos presos no localStorage */
+    nbMock.reset('clientes', [
         { id: 1, nome: 'Grupo CSN', pendenciaContratual: true },
         { id: 2, nome: 'Cimento Nacional', pendenciaContratual: false },
         { id: 3, nome: 'CBMM', pendenciaContratual: false }
     ]);
 
-    nbMock.seed('fornecedores', [
+    nbMock.reset('fornecedores', [
         { id: 1, nome: 'Aços Vale Verde Ltda' },
         { id: 2, nome: 'Transportadora Rota Sul' },
         { id: 3, nome: 'Britagem Serra Azul' },
