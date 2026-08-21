@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gest├úo de Pr├®-Cadastro de Pedidos ÔÇö UX Melhorado</title>
+    <title>Gestão de Pré-Cadastro de Pedidos — UX Melhorado</title>
 
     <link href="assets/CSS/utils.css" rel="stylesheet" />
     <link href="assets/CSS/select2.min.css" rel="stylesheet" />
@@ -11,11 +11,11 @@
     <link href="assets/CSS/NovoBancodoc.css" rel="stylesheet" />
 
     <style>
-        /* ÔöÇÔöÇ A11y / contraste (WCAG AA) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+        /* ── A11y / contraste (WCAG AA) ───────────────────────────────────── */
         :root {
             --ux-text: #1a1a1a;
-            --ux-text-secondary: #4a4a4a;   /* ÔëÑ4.5:1 em fundo branco */
-            --ux-text-muted: #595959;       /* ÔëÑ4.5:1 ÔÇö substitui #8a8a8a/#777 */
+            --ux-text-secondary: #4a4a4a;   /* ≥4.5:1 em fundo branco */
+            --ux-text-muted: #595959;       /* ≥4.5:1 — substitui #8a8a8a/#777 */
             --ux-border: #c8c8c8;
             --ux-focus: #0b57d0;
             --ux-danger: #b3261e;
@@ -45,7 +45,7 @@
         }
         .ux-skip:focus { left: .5rem; top: .5rem; }
 
-        /* Foco vis├¡vel refor├ºado */
+        /* Foco visível reforçado */
         .nb-btn:focus-visible,
         .nb-input:focus-visible,
         .nb-profile-switch button:focus-visible,
@@ -57,7 +57,7 @@
             outline-offset: 2px;
         }
 
-        /* ÔöÇÔöÇ Barra de simula├º├úo de perfil (prot├│tipo) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+        /* ── Barra de simulação de perfil (protótipo) ────────────────────── */
         .nb-profile-bar {
             display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
             justify-content: space-between;
@@ -98,7 +98,7 @@
             margin-bottom: .25rem;
         }
 
-        /* Campo desabilitado: al├®m de opacity, indica├º├úo textual */
+        /* Campo desabilitado: além de opacity, indicação textual */
         .nb-field.is-locked .nb-field-label::after {
             content: " (fixo ao seu perfil)";
             font-weight: 400; color: var(--ux-text-muted); font-size: .8em;
@@ -108,7 +108,7 @@
             opacity: .85; cursor: not-allowed;
         }
 
-        /* ÔöÇÔöÇ Grid: link do documento + ├írea de toque ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+        /* ── Grid: link do documento + área de toque ─────────────────────── */
         .ux-doc-link {
             color: #0b57d0; font-weight: 600; text-decoration: underline;
             text-underline-offset: 2px; background: none; border: 0;
@@ -165,7 +165,7 @@
             max-width: 480px; width: 92vw;
         }
 
-        /* Empty state sem depender s├│ de emoji */
+        /* Empty state sem depender só de emoji */
         .nb-empty-state { color: var(--ux-text-secondary); padding: 2rem 1rem; text-align: center; }
         .nb-empty-state-icon {
             display: block; font-size: 2rem; margin-bottom: .5rem;
@@ -178,7 +178,7 @@
             overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
         }
 
-        /* ÔöÇÔöÇ Modal detalhe (limpo, com abas) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+        /* ── Modal detalhe (limpo, com abas) ─────────────────────────────── */
         #divDetalhe .nb-modal-box {
             width: min(920px, 94vw); max-width: 920px; height: auto;
             max-height: 90vh;
@@ -215,7 +215,7 @@
             word-break: break-word;
         }
 
-        /* Alerta ├║nico (pend├¬ncia ou classifica├º├úo) ÔÇö sem repetir depois */
+        /* Alerta único (pendência ou classificação) — sem repetir depois */
         .det-alert {
             margin: 1rem 1.25rem 0; padding: .75rem 1rem;
             border-radius: 8px; border: 1px solid transparent;
@@ -243,7 +243,7 @@
             margin: .55rem 0 0; font-size: .8rem; opacity: .9; line-height: 1.35;
         }
 
-        /* Classifica├º├úo: op├º├Áes contrastantes + r├ídio vis├¡vel */
+        /* Classificação: opções contrastantes + rádio visível */
         .det-classif-prompt {
             margin: 0 0 .65rem; font-size: .85rem; color: #5c3d00; line-height: 1.35;
         }
@@ -307,7 +307,7 @@
             opacity: .45; cursor: not-allowed; pointer-events: none;
         }
 
-        /* Abas removidas ÔÇö se├º├Áes lineares no detalhe */
+        /* Abas removidas — seções lineares no detalhe */
         .det-section {
             padding: 1rem 1.25rem 0;
         }
@@ -412,7 +412,7 @@
             width: .5rem; height: .5rem; border-radius: 50%; flex-shrink: 0;
         }
 
-        /* Barra superior: itens por p├ígina + chips (esq) | intervalo (dir) */
+        /* Barra superior: itens por página + chips (esq) | intervalo (dir) */
         .ux-pager-top {
             display: flex; align-items: center; justify-content: space-between;
             gap: 1rem; flex-wrap: wrap;
@@ -462,7 +462,7 @@
             border-right: 0;
         }
 
-        /* Pagina├º├úo centralizada abaixo da tabela */
+        /* Paginação centralizada abaixo da tabela */
         .ux-pager.grid-pager {
             display: flex; flex-wrap: wrap; gap: 4px;
             justify-content: center; align-items: center;
@@ -497,7 +497,7 @@
             .ux-pager.grid-pager { justify-content: center; }
         }
 
-        /* Ordena├º├úo de colunas (padr├úo do print: Ôû▓ ao lado do t├¡tulo) */
+        /* Ordenação de colunas (padrão do print: ▲ ao lado do título) */
         .nb-grid thead th.ux-sortable {
             cursor: pointer; user-select: none; white-space: nowrap;
         }
@@ -525,7 +525,7 @@
         .nb-grid thead th[style*="center"] .ux-sort-btn { justify-content: center; }
         .nb-grid thead th[style*="left"] .ux-sort-btn { justify-content: flex-start; }
 
-        /* Confirma├º├úo enxuta */
+        /* Confirmação enxuta */
         #divConfirmClassif .nb-modal-box { max-width: 400px; }
         #divConfirmClassif .nb-modal-body { padding: 1rem 1.25rem; }
         #confirmMsg { margin: 0; line-height: 1.5; color: var(--ux-text); font-size: .95rem; }
@@ -540,26 +540,26 @@
     </style>
 </head>
 <body class="fundo_default">
-    <a class="ux-skip" href="#conteudoPrincipal">Ir para o conte├║do</a>
+    <a class="ux-skip" href="#conteudoPrincipal">Ir para o conteúdo</a>
 
     <div>
         <div class="nb-page-wrap-double" id="conteudoPrincipal">
 
-            <div class="nb-profile-bar" role="group" aria-label="Simula├º├úo de perfil de acesso">
+            <div class="nb-profile-bar" role="group" aria-label="Simulação de perfil de acesso">
                 <div>
-                    <span class="ux-proto-tag">Prot├│tipo</span>
+                    <span class="ux-proto-tag">Protótipo</span>
                     <span class="nb-profile-label">Simular perfil de acesso:</span>
                 </div>
                 <div class="nb-profile-switch" id="perfilSwitch" role="tablist" aria-label="Perfil">
                     <button type="button" role="tab" data-perfil="demarco" class="active" aria-selected="true">Demarco</button>
                     <button type="button" role="tab" data-perfil="cliente" aria-selected="false">Cliente</button>
-                    <button type="button" role="tab" data-perfil="excecao" aria-selected="false">Exce├º├úo</button>
+                    <button type="button" role="tab" data-perfil="excecao" aria-selected="false">Exceção</button>
                 </div>
             </div>
 
-            <h1 class="nb-page-title">Gest├úo de Pr├®-Cadastro de Pedidos</h1>
+            <h1 class="nb-page-title">Gestão de Pré-Cadastro de Pedidos</h1>
             <p class="nb-profile-hint" id="perfilHint" aria-live="polite">
-                Vis├úo Demarco ÔÇö todos os clientes e filtros dispon├¡veis.
+                Visão Demarco — todos os clientes e filtros disponíveis.
             </p>
 
             <p class="ux-glossario-link">
@@ -615,8 +615,8 @@
                             <label class="nb-field-label" for="fltStatus">Status</label>
                             <select id="fltStatus" class="nb-select">
                                 <option value="">Todos</option>
-                                <option value="Pendencia Contratual">Pend├¬ncia Contratual</option>
-                                <option value="Pendencia Cadastral">Pend├¬ncia Cadastral</option>
+                                <option value="Pendencia Contratual">Pendência Contratual</option>
+                                <option value="Pendencia Cadastral">Pendência Cadastral</option>
                                 <option value="Regular">Regular</option>
                             </select>
                         </div>
@@ -645,8 +645,8 @@
                 <div class="ux-pager-top" id="pagerTop" hidden>
                     <div class="ux-pager-top-left">
                         <label class="ux-page-size" for="selPageSize">
-                            <span class="ux-page-size-label">Itens por p├ígina</span>
-                            <select id="selPageSize" class="nb-select" aria-label="Itens por p├ígina">
+                            <span class="ux-page-size-label">Itens por página</span>
+                            <select id="selPageSize" class="nb-select" aria-label="Itens por página">
                                 <option value="10" selected>10</option>
                                 <option value="20">20</option>
                                 <option value="30">30</option>
@@ -663,49 +663,49 @@
                         <table class="nb-grid" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:center;width:88px">A├º├Áes</th>
+                                    <th scope="col" style="text-align:center;width:88px">Ações</th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="documento" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Documento de Compra <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Documento de Compra <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="fornecedor" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Fornecedor <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Fornecedor <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="unidade" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Unidade <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Unidade <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="subcontratadas" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Subcontratadas <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Subcontratadas <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="gestor" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Gestor do Contrato <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Gestor do Contrato <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInclusao" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Data de Inclus├úo <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Data de Inclusão <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInicio" aria-sort="ascending">
-                                        <button type="button" class="ux-sort-btn">Data de in├¡cio <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Data de início <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:center" data-sort="status" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Status <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                        <button type="button" class="ux-sort-btn">Status <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="gridBody"></tbody>
                         </table>
                         <div id="gridVazio" class="nb-empty-state" role="status">
-                            <span class="nb-empty-state-icon" aria-hidden="true">ÔîÇ</span>
+                            <span class="nb-empty-state-icon" aria-hidden="true">⌀</span>
                             <strong>Nenhuma consulta realizada</strong><br />
                             Selecione os filtros desejados e clique em <strong>Filtrar</strong>.
                         </div>
                     </div>
                 </div>
-                <nav class="grid-pager ux-pager" id="gridPager" aria-label="Pagina├º├úo da lista" hidden></nav>
+                <nav class="grid-pager ux-pager" id="gridPager" aria-label="Paginação da lista" hidden></nav>
             </fieldset>
 
         </div>
     </div>
 
-    <!-- Modal: gloss├írio de status -->
+    <!-- Modal: glossário de status -->
     <div id="divGlossarioStatus" class="nb-modal-wrap" role="dialog" aria-modal="true"
          aria-labelledby="glossarioTitulo">
         <div class="nb-modal-box">
@@ -717,33 +717,33 @@
             <div class="nb-modal-body">
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
-                        <span class="nb-badge nb-badge--danger">Pend├¬ncia Contratual</span>
+                        <span class="nb-badge nb-badge--danger">Pendência Contratual</span>
                     </div>
-                    <p>O pedido aguarda classifica├º├úo (Interno ou Externo) pelo perfil Cliente antes de seguir o fluxo.</p>
+                    <p>O pedido aguarda classificação (Interno ou Externo) pelo perfil Cliente antes de seguir o fluxo.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
-                        <span class="nb-badge nb-badge--warning">Pend├¬ncia Cadastral</span>
+                        <span class="nb-badge nb-badge--warning">Pendência Cadastral</span>
                     </div>
-                    <p>H├í dados do pedido que ainda n├úo existem (ou n├úo est├úo vinculados) no cadastro do sistema ÔÇö fornecedor, unidade, gestor, etc.</p>
+                    <p>Há dados do pedido que ainda não existem (ou não estão vinculados) no cadastro do sistema — fornecedor, unidade, gestor, etc.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
                         <span class="nb-badge nb-badge--success">Regular</span>
                     </div>
-                    <p>Pedido apto a seguir o fluxo operacional sem bloqueios cadastrais ou de classifica├º├úo. Externo nunca chega neste status.</p>
+                    <p>Pedido apto a seguir o fluxo operacional sem bloqueios cadastrais ou de classificação. Externo nunca chega neste status.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
                         <span class="nb-badge nb-badge--muted">Externo</span>
                     </div>
-                    <p>Classifica├º├úo do Cliente: o pedido n├úo segue o fluxo Demarco e nunca fica Regular. Permanece no pr├®-cadastro at├® o perfil de exce├º├úo arquivar.</p>
+                    <p>Classificação do Cliente: o pedido não segue o fluxo Demarco e nunca fica Regular. Permanece no pré-cadastro até o perfil de exceção arquivar.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
                         <span class="nb-badge nb-badge--muted">Arquivado</span>
                     </div>
-                    <p>N├úo ├® um quarto status operacional: some da lista padr├úo e volta pelo filtro de auditoria (ÔÇ£Incluir arquivadosÔÇØ). Pedido j├í vigente com lote irregular usa o selo na coluna do documento.</p>
+                    <p>Não é um quarto status operacional: some da lista padrão e volta pelo filtro de auditoria (“Incluir arquivados”). Pedido já vigente com lote irregular usa o selo na coluna do documento.</p>
                 </div>
             </div>
             <div class="nb-modal-footer">
@@ -820,7 +820,7 @@
                 <button type="button" class="nb-modal-close" id="arquivarFechar" aria-label="Cancelar">&#215;</button>
             </div>
             <div class="nb-modal-body">
-                <p style="margin:0 0 .75rem;line-height:1.45">Este pedido n├úo segue o fluxo Demarco e n├úo fica Regular. Arquivar n├úo apaga o registro. Uma reentrada SAP do mesmo n├║mero gera um novo lote.</p>
+                <p style="margin:0 0 .75rem;line-height:1.45">Este pedido não segue o fluxo Demarco e não fica Regular. Arquivar não apaga o registro. Uma reentrada SAP do mesmo número gera um novo lote.</p>
                 <label class="nb-field-label" for="arquivarJust">Justificativa</label>
                 <textarea id="arquivarJust" class="nb-input" rows="3" style="width:100%" maxlength="400"></textarea>
             </div>
@@ -831,12 +831,12 @@
         </div>
     </div>
 
-    <!-- Modal: confirma├º├úo de classifica├º├úo -->
+    <!-- Modal: confirmação de classificação -->
     <div id="divConfirmClassif" class="nb-modal-wrap" role="dialog" aria-modal="true"
          aria-labelledby="confirmTitulo">
         <div class="nb-modal-box">
             <div class="nb-modal-header">
-                <span class="nb-modal-title" id="confirmTitulo">Confirmar classifica├º├úo</span>
+                <span class="nb-modal-title" id="confirmTitulo">Confirmar classificação</span>
                 <button type="button" class="nb-modal-close" id="confirmFechar" aria-label="Cancelar">&#215;</button>
             </div>
             <div class="nb-modal-body">

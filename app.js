@@ -1,6 +1,6 @@
-﻿/*
- * app.js ÔÇö Pr├®-Cadastro de Pedidos (PRD v1.5).
- * Perfis: Demarco ┬À Cliente (classifica) ┬À Exce├º├úo (bypass + arquivar).
+/*
+ * app.js — Pré-Cadastro de Pedidos (PRD v1.5).
+ * Perfis: Demarco · Cliente (classifica) · Exceção (bypass + arquivar).
  */
 (function () {
     'use strict';
@@ -21,12 +21,12 @@
     ]);
 
     nbMock.seed('fornecedores', [
-        { id: 1, nome: 'A├ºos Vale Verde Ltda' },
+        { id: 1, nome: 'Aços Vale Verde Ltda' },
         { id: 2, nome: 'Transportadora Rota Sul' },
         { id: 3, nome: 'Britagem Serra Azul' },
-        { id: 4, nome: 'Cimento Forte Ind├║stria' },
-        { id: 5, nome: 'Loca├º├Áes Horizonte' },
-        { id: 6, nome: 'Servi├ºos ├üpice Engenharia' }
+        { id: 4, nome: 'Cimento Forte Indústria' },
+        { id: 5, nome: 'Locações Horizonte' },
+        { id: 6, nome: 'Serviços Ápice Engenharia' }
     ]);
 
     function evt(quando, texto) {
@@ -34,24 +34,24 @@
     }
 
     nbMock.reset('pedidos', [
-        { id: 1,  clienteId: 1, documento: '4500012345', fornecedorId: 1, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [], gestor: 'Carlos Andrade', dataInclusao: '05/05/2026', dataInicio: '10/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('05/05/2026 09:12', 'Entrada via API ÔÇö lote com pend├¬ncia cadastral (fornecedor).')] },
+        { id: 1,  clienteId: 1, documento: '4500012345', fornecedorId: 1, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [], gestor: 'Carlos Andrade', dataInclusao: '05/05/2026', dataInicio: '10/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('05/05/2026 09:12', 'Entrada via API — lote com pendência cadastral (fornecedor).')] },
         { id: 2,  clienteId: 1, documento: '4500012346', fornecedorId: 2, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Fernanda Lima', dataInclusao: '06/05/2026', dataInicio: '12/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('06/05/2026 08:01', 'Entrada Regular.'), evt('06/05/2026 08:02', 'Cadastro ativo criado.')] },
-        { id: 3,  clienteId: 1, documento: '4500012347', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [{ cnpj: '11.222.333/0001-44', nome: 'Apoio Obras Sul' }], gestor: 'Rafael Souza', dataInclusao: '07/05/2026', dataInicio: '15/05/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('07/05/2026 11:40', 'Entrada ÔÇö aguarda classifica├º├úo Interno/Externo (CSN).')] },
-        { id: 4,  clienteId: 1, documento: '4500012351', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '55.666.777/0001-88', nome: 'Guindastes Norte' }], gestor: 'Carlos Andrade', dataInclusao: '08/05/2026', dataInicio: '08/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('08/05/2026 10:00', 'Entrada Regular ÔÇö cadastro ativo criado.')] },
-        { id: 5,  clienteId: 1, documento: '4500012358', fornecedorId: 5, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Agregados Cajamar', 'Unidade Pedro Leopoldo'], unidadesPendentes: ['Agregados Barueri', 'Agregados Cajamar'], subcontratadas: [{ cnpj: '99.888.777/0001-11', nome: 'Caldeiraria Leste' }], gestor: 'Juliana Prado', dataInclusao: '11/05/2026', dataInicio: '20/05/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('11/05/2026 14:22', 'Classificado Interno; permanece em pend├¬ncia cadastral.')] },
-        { id: 6,  clienteId: 1, documento: '4500012360', fornecedorId: 6, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Rafael Souza', dataInclusao: '12/05/2026', dataInicio: '01/06/2026', status: 'Pendencia Contratual', classificacao: 'Externo', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('12/05/2026 09:00', 'Entrada.'), evt('13/05/2026 16:10', 'Classificado Externo ÔÇö nunca Regular; aguarda arquivar.')] },
-        { id: 7,  clienteId: 1, documento: '4500012372', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Cajamar'], subcontratadas: [], gestor: 'Fernanda Lima', dataInclusao: '13/05/2026', dataInicio: '18/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('13/05/2026 08:30', 'Regular ÔÇö cadastro ativo criado.')] },
-        { id: 8,  clienteId: 1, documento: '4500012385', fornecedorId: 1, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Juliana Prado', dataInclusao: '14/05/2026', dataInicio: '25/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('14/05/2026 12:00', 'Entrada com pend├¬ncia de contraparte e gestor.')] },
-        { id: 9,  clienteId: 1, documento: '4500012390', fornecedorId: 3, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '22.333.444/0001-55', nome: 'Montagem Beta' }, { cnpj: '33.444.555/0001-66', nome: 'El├®trica Gama' }], gestor: 'Carlos Andrade', dataInclusao: '15/05/2026', dataInicio: '22/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('15/05/2026 09:15', 'Regular ÔÇö cadastro ativo.')] },
-        { id: 10, clienteId: 1, documento: '4500012404', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], subcontratadas: [], gestor: 'Marcos Oliveira', dataInclusao: '18/05/2026', dataInicio: '02/06/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('18/05/2026 17:02', 'Entrada ÔÇö Pend├¬ncia Contratual.')] },
-        { id: 11, clienteId: 1, documento: '4500012417', fornecedorId: 5, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Agregados Barueri', 'Unidade Pedro Leopoldo'], subcontratadas: [], gestor: 'Rafael Souza', dataInclusao: '19/05/2026', dataInicio: '19/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('19/05/2026 10:00', 'Regular ÔÇö cadastro ativo.')] },
-        { id: 12, clienteId: 1, documento: '4500012421', fornecedorId: 6, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Patr├¡cia Nunes', dataInclusao: '20/05/2026', dataInicio: '28/05/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('04/05/2026 09:00', 'Lote anterior Regular ÔÇö cadastro ativo criado.'), evt('20/05/2026 11:33', 'Reentrada irregular ÔÇö selo de vig├¬ncia; ativo intocado.')] },
-        { id: 13, clienteId: 1, documento: '4500012438', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [{ cnpj: '77.111.222/0001-99', nome: 'Servi├ºos Delta' }], gestor: 'Fernanda Lima', dataInclusao: '21/05/2026', dataInicio: '05/06/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('21/05/2026 08:44', 'Entrada ÔÇö Pend├¬ncia Contratual.')] },
+        { id: 3,  clienteId: 1, documento: '4500012347', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [{ cnpj: '11.222.333/0001-44', nome: 'Apoio Obras Sul' }], gestor: 'Rafael Souza', dataInclusao: '07/05/2026', dataInicio: '15/05/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('07/05/2026 11:40', 'Entrada — aguarda classificação Interno/Externo (CSN).')] },
+        { id: 4,  clienteId: 1, documento: '4500012351', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '55.666.777/0001-88', nome: 'Guindastes Norte' }], gestor: 'Carlos Andrade', dataInclusao: '08/05/2026', dataInicio: '08/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('08/05/2026 10:00', 'Entrada Regular — cadastro ativo criado.')] },
+        { id: 5,  clienteId: 1, documento: '4500012358', fornecedorId: 5, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Agregados Cajamar', 'Unidade Pedro Leopoldo'], unidadesPendentes: ['Agregados Barueri', 'Agregados Cajamar'], subcontratadas: [{ cnpj: '99.888.777/0001-11', nome: 'Caldeiraria Leste' }], gestor: 'Juliana Prado', dataInclusao: '11/05/2026', dataInicio: '20/05/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('11/05/2026 14:22', 'Classificado Interno; permanece em pendência cadastral.')] },
+        { id: 6,  clienteId: 1, documento: '4500012360', fornecedorId: 6, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Rafael Souza', dataInclusao: '12/05/2026', dataInicio: '01/06/2026', status: 'Pendencia Contratual', classificacao: 'Externo', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('12/05/2026 09:00', 'Entrada.'), evt('13/05/2026 16:10', 'Classificado Externo — nunca Regular; aguarda arquivar.')] },
+        { id: 7,  clienteId: 1, documento: '4500012372', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Cajamar'], subcontratadas: [], gestor: 'Fernanda Lima', dataInclusao: '13/05/2026', dataInicio: '18/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('13/05/2026 08:30', 'Regular — cadastro ativo criado.')] },
+        { id: 8,  clienteId: 1, documento: '4500012385', fornecedorId: 1, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Juliana Prado', dataInclusao: '14/05/2026', dataInicio: '25/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('14/05/2026 12:00', 'Entrada com pendência de contraparte e gestor.')] },
+        { id: 9,  clienteId: 1, documento: '4500012390', fornecedorId: 3, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '22.333.444/0001-55', nome: 'Montagem Beta' }, { cnpj: '33.444.555/0001-66', nome: 'Elétrica Gama' }], gestor: 'Carlos Andrade', dataInclusao: '15/05/2026', dataInicio: '22/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('15/05/2026 09:15', 'Regular — cadastro ativo.')] },
+        { id: 10, clienteId: 1, documento: '4500012404', fornecedorId: 4, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo'], subcontratadas: [], gestor: 'Marcos Oliveira', dataInclusao: '18/05/2026', dataInicio: '02/06/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('18/05/2026 17:02', 'Entrada — Pendência Contratual.')] },
+        { id: 11, clienteId: 1, documento: '4500012417', fornecedorId: 5, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Agregados Barueri', 'Unidade Pedro Leopoldo'], subcontratadas: [], gestor: 'Rafael Souza', dataInclusao: '19/05/2026', dataInicio: '19/05/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('19/05/2026 10:00', 'Regular — cadastro ativo.')] },
+        { id: 12, clienteId: 1, documento: '4500012421', fornecedorId: 6, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Patrícia Nunes', dataInclusao: '20/05/2026', dataInicio: '28/05/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('04/05/2026 09:00', 'Lote anterior Regular — cadastro ativo criado.'), evt('20/05/2026 11:33', 'Reentrada irregular — selo de vigência; ativo intocado.')] },
+        { id: 13, clienteId: 1, documento: '4500012438', fornecedorId: 2, unidade: 'Unidade Pedro Leopoldo', unidades: ['Unidade Pedro Leopoldo', 'Agregados Barueri'], subcontratadas: [{ cnpj: '77.111.222/0001-99', nome: 'Serviços Delta' }], gestor: 'Fernanda Lima', dataInclusao: '21/05/2026', dataInicio: '05/06/2026', status: 'Pendencia Contratual', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('21/05/2026 08:44', 'Entrada — Pendência Contratual.')] },
         { id: 14, clienteId: 1, documento: '4500012445', fornecedorId: 1, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Juliana Prado', dataInclusao: '22/05/2026', dataInicio: '01/06/2026', status: 'Regular', classificacao: 'Interno', cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('22/05/2026 13:10', 'Regular.')] },
-        { id: 15, clienteId: 1, documento: '4500012456', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo', 'Agregados Barueri'], unidadesPendentes: ['Agregados Cajamar', 'Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '88.999.000/0001-22', nome: 'Usinagem Omega' }, { cnpj: '12.120.120/0001-12', nome: 'Pintura Zeta' }], gestor: 'Carlos Andrade', dataInclusao: '25/05/2026', dataInicio: '10/06/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('25/05/2026 15:01', 'Interno com pend├¬ncias (fornecedor, unidades, subs, pessoas).')] },
-        { id: 16, clienteId: 2, documento: '7800045501', fornecedorId: 1, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Agregados Cajamar'], subcontratadas: [], gestor: 'Marcos Oliveira', dataInclusao: '10/05/2026', dataInicio: '15/05/2026', status: 'Regular', classificacao: null, cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('10/05/2026 09:00', 'Contrato CN ÔÇö flag PendenciaContratual desligada; entrou Regular.')] },
-        { id: 17, clienteId: 3, documento: '9900078820', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Patr├¡cia Nunes', dataInclusao: '21/05/2026', dataInicio: '30/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('21/05/2026 18:00', 'Contrato CBMM ÔÇö sem classifica├º├úo Interno/Externo; pend├¬ncia cadastral.')] },
-        { id: 18, clienteId: 1, documento: '4500012500', fornecedorId: 2, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Fernanda Lima', dataInclusao: '02/05/2026', dataInicio: '03/05/2026', status: 'Pendencia Contratual', classificacao: 'Externo', cadastroAtivo: false, arquivado: true, justificativaArquivo: 'Pedido de compra de material, fora do fluxo Demarco.', tracking: [evt('02/05/2026 10:00', 'Classificado Externo.'), evt('04/05/2026 11:20', 'Arquivado (exce├º├úo). Justificativa: Pedido de compra de material, fora do fluxo Demarco.')] }
+        { id: 15, clienteId: 1, documento: '4500012456', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar', 'Unidade Pedro Leopoldo', 'Agregados Barueri'], unidadesPendentes: ['Agregados Cajamar', 'Unidade Pedro Leopoldo'], subcontratadas: [{ cnpj: '88.999.000/0001-22', nome: 'Usinagem Omega' }, { cnpj: '12.120.120/0001-12', nome: 'Pintura Zeta' }], gestor: 'Carlos Andrade', dataInclusao: '25/05/2026', dataInicio: '10/06/2026', status: 'Pendencia Cadastral', classificacao: 'Interno', cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('25/05/2026 15:01', 'Interno com pendências (fornecedor, unidades, subs, pessoas).')] },
+        { id: 16, clienteId: 2, documento: '7800045501', fornecedorId: 1, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri', 'Agregados Cajamar'], subcontratadas: [], gestor: 'Marcos Oliveira', dataInclusao: '10/05/2026', dataInicio: '15/05/2026', status: 'Regular', classificacao: null, cadastroAtivo: true, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('10/05/2026 09:00', 'Contrato CN — flag PendenciaContratual desligada; entrou Regular.')] },
+        { id: 17, clienteId: 3, documento: '9900078820', fornecedorId: 3, unidade: 'Agregados Cajamar', unidades: ['Agregados Cajamar'], subcontratadas: [], gestor: 'Patrícia Nunes', dataInclusao: '21/05/2026', dataInicio: '30/05/2026', status: 'Pendencia Cadastral', classificacao: null, cadastroAtivo: false, arquivado: false, ignoredUnidades: [], ignoredSubs: [], tracking: [evt('21/05/2026 18:00', 'Contrato CBMM — sem classificação Interno/Externo; pendência cadastral.')] },
+        { id: 18, clienteId: 1, documento: '4500012500', fornecedorId: 2, unidade: 'Agregados Barueri', unidades: ['Agregados Barueri'], subcontratadas: [], gestor: 'Fernanda Lima', dataInclusao: '02/05/2026', dataInicio: '03/05/2026', status: 'Pendencia Contratual', classificacao: 'Externo', cadastroAtivo: false, arquivado: true, justificativaArquivo: 'Pedido de compra de material, fora do fluxo Demarco.', tracking: [evt('02/05/2026 10:00', 'Classificado Externo.'), evt('04/05/2026 11:20', 'Arquivado (exceção). Justificativa: Pedido de compra de material, fora do fluxo Demarco.')] }
     ]);
 
     var perfil = 'demarco';
@@ -80,60 +80,60 @@
 
     var PEND_COPY = {
         fornecedor: {
-            titulo: 'Fornecedor n├úo cadastrado',
-            corpo: 'O CNPJ {cnpj} n├úo est├í cadastrado neste cliente. Todos os dados do fornecedor ficam pendentes at├® isso.',
-            acao: 'Cadastre a empresa neste cliente. O pr├®-cadastro ser├í conferido de novo em seguida.'
+            titulo: 'Fornecedor não cadastrado',
+            corpo: 'O CNPJ {cnpj} não está cadastrado neste cliente. Todos os dados do fornecedor ficam pendentes até isso.',
+            acao: 'Cadastre a empresa neste cliente. O pré-cadastro será conferido de novo em seguida.'
         },
         unidadeNaoCadastrada: {
-            titulo: 'Unidade n├úo cadastrada',
-            corpo: 'O c├│digo {cod} n├úo corresponde a uma unidade deste cliente.',
-            acao: 'Cadastre a unidade. Se N>1, perfil de exce├º├úo pode ignorar desde que reste ÔëÑ1 unidade.'
+            titulo: 'Unidade não cadastrada',
+            corpo: 'O código {cod} não corresponde a uma unidade deste cliente.',
+            acao: 'Cadastre a unidade. Se N>1, perfil de exceção pode ignorar desde que reste ≥1 unidade.'
         },
         unidadeNaoAtrelada: {
-            titulo: 'Unidade n├úo vinculada ao fornecedor',
-            corpo: 'A unidade {nome} existe, mas o fornecedor n├úo est├í atrelado a ela.',
-            acao: 'Fa├ºa o atrelamento. Mesma regra de ignorar se N>1.'
+            titulo: 'Unidade não vinculada ao fornecedor',
+            corpo: 'A unidade {nome} existe, mas o fornecedor não está atrelado a ela.',
+            acao: 'Faça o atrelamento. Mesma regra de ignorar se N>1.'
         },
         subcontratadaNaoCadastrada: {
-            titulo: 'Subcontratada n├úo cadastrada',
-            corpo: 'O CNPJ {cnpj} n├úo est├í cadastrado como empresa deste cliente.',
-            acao: 'Cadastre a empresa ou ignore neste lote (perfil de exce├º├úo).'
+            titulo: 'Subcontratada não cadastrada',
+            corpo: 'O CNPJ {cnpj} não está cadastrado como empresa deste cliente.',
+            acao: 'Cadastre a empresa ou ignore neste lote (perfil de exceção).'
         },
         subcontratadaNaoAtrelada: {
-            titulo: 'Subcontratada sem v├¡nculo em todas as unidades',
-            corpo: '{razao} existe, mas n├úo est├í vinculada a todas as unidades deste documento. Falta v├¡nculo em: {lista}.',
-            acao: 'Fa├ºa o atrelamento ou ignore esta subcontratada neste lote.'
+            titulo: 'Subcontratada sem vínculo em todas as unidades',
+            corpo: '{razao} existe, mas não está vinculada a todas as unidades deste documento. Falta vínculo em: {lista}.',
+            acao: 'Faça o atrelamento ou ignore esta subcontratada neste lote.'
         },
         contraparte: {
-            titulo: 'Contraparte n├úo cadastrado neste cliente',
-            corpo: 'N├úo encontramos um usu├írio com o e-mail {valor} neste cliente.',
-            acao: 'Cadastre o usu├írio neste cliente com esse e-mail.'
+            titulo: 'Contraparte não cadastrado neste cliente',
+            corpo: 'Não encontramos um usuário com o e-mail {valor} neste cliente.',
+            acao: 'Cadastre o usuário neste cliente com esse e-mail.'
         },
         gestor: {
-            titulo: 'Gestor do Contrato n├úo cadastrado neste cliente',
-            corpo: 'N├úo encontramos um usu├írio com o e-mail {valor} neste cliente.',
-            acao: 'Cadastre o usu├írio neste cliente com esse e-mail.'
+            titulo: 'Gestor do Contrato não cadastrado neste cliente',
+            corpo: 'Não encontramos um usuário com o e-mail {valor} neste cliente.',
+            acao: 'Cadastre o usuário neste cliente com esse e-mail.'
         },
         gestorOutroCliente: {
-            titulo: 'Gestor do Contrato n├úo pertence a este cliente',
-            corpo: '{Nome} ({e-mail}) existe no Bancodoc em outro cliente. N├úo usamos esse cadastro aqui.',
-            acao: 'Cadastre este e-mail como usu├írio neste cliente.'
+            titulo: 'Gestor do Contrato não pertence a este cliente',
+            corpo: '{Nome} ({e-mail}) existe no Bancodoc em outro cliente. Não usamos esse cadastro aqui.',
+            acao: 'Cadastre este e-mail como usuário neste cliente.'
         },
         gestorInativo: {
-            titulo: 'Gestor do Contrato est├í inativo',
-            corpo: '{Nome} ({e-mail}) est├í cadastrado, mas inativo.',
-            acao: 'Reative o usu├írio ou envie outro e-mail na integra├º├úo.'
+            titulo: 'Gestor do Contrato está inativo',
+            corpo: '{Nome} ({e-mail}) está cadastrado, mas inativo.',
+            acao: 'Reative o usuário ou envie outro e-mail na integração.'
         },
         comprador: {
-            titulo: 'Comprador n├úo cadastrado neste cliente',
-            corpo: 'N├úo encontramos um usu├írio com o e-mail {valor} neste cliente.',
-            acao: 'Cadastre o usu├írio neste cliente com esse e-mail.'
+            titulo: 'Comprador não cadastrado neste cliente',
+            corpo: 'Não encontramos um usuário com o e-mail {valor} neste cliente.',
+            acao: 'Cadastre o usuário neste cliente com esse e-mail.'
         }
     };
 
     var STATUS_LABEL = {
-        'Pendencia Cadastral': 'Pend├¬ncia Cadastral',
-        'Pendencia Contratual': 'Pend├¬ncia Contratual',
+        'Pendencia Cadastral': 'Pendência Cadastral',
+        'Pendencia Contratual': 'Pendência Contratual',
         'Regular': 'Regular'
     };
 
@@ -269,13 +269,13 @@
         var sub = (subsDoPedido(p)[0] || {});
         var uns = unidadesDoPedido(p);
         return s
-            .replace('{cnpj}', k && k.indexOf('sub') === 0 ? (sub.cnpj || 'ÔÇö') : cnpjFornecedor(p))
+            .replace('{cnpj}', k && k.indexOf('sub') === 0 ? (sub.cnpj || '—') : cnpjFornecedor(p))
             .replace('{cod}', COD_SAP[uns[0]] || 'SAP0000')
-            .replace('{nome}', uns[0] || 'ÔÇö')
-            .replace('{razao}', sub.nome || sub.cnpj || 'ÔÇö')
-            .replace('{lista}', uns.slice(1).join(', ') || uns[0] || 'ÔÇö')
+            .replace('{nome}', uns[0] || '—')
+            .replace('{razao}', sub.nome || sub.cnpj || '—')
+            .replace('{lista}', uns.slice(1).join(', ') || uns[0] || '—')
             .replace('{valor}', nomeParaEmailCsn(p.gestor))
-            .replace('{Nome}', p.gestor || 'ÔÇö')
+            .replace('{Nome}', p.gestor || '—')
             .replace('{e-mail}', nomeParaEmailCsn(p.gestor));
     }
 
@@ -325,7 +325,7 @@
         if (!pend.length) return '';
         return '<div class="det-alert det-alert--danger" role="status">' +
             '<p class="det-alert-title">' + pend.length +
-            (pend.length === 1 ? ' pend├¬ncia cadastral' : ' pend├¬ncias cadastrais') + '</p>' +
+            (pend.length === 1 ? ' pendência cadastral' : ' pendências cadastrais') + '</p>' +
             pend.map(function (k) {
                 var cp = PEND_COPY[k] || { titulo: k, corpo: '', acao: '' };
                 var aberto = chipDetalheAberto === k;
@@ -336,7 +336,7 @@
                         : '<span>Clique para ver o dado recebido e o que fazer.</span>') +
                     '</button>';
             }).join('') +
-            '<p class="det-alert-note">Os campos afetados est├úo indicados abaixo.</p>' +
+            '<p class="det-alert-note">Os campos afetados estão indicados abaixo.</p>' +
             '</div>';
     }
 
@@ -344,21 +344,21 @@
         if (p.classificacao === 'Externo') {
             var html = '<div class="det-alert det-alert--warn" role="status">' +
                 '<p class="det-alert-title">Pedido externo</p>' +
-                '<p class="det-alert-note" style="margin:0 0 .65rem">Este pedido n├úo segue o fluxo Demarco e n├úo fica Regular. Ele permanece aqui at├® ser arquivado.</p>';
+                '<p class="det-alert-note" style="margin:0 0 .65rem">Este pedido não segue o fluxo Demarco e não fica Regular. Ele permanece aqui até ser arquivado.</p>';
             if (perfilExcecao() && !p.arquivado) {
                 html += '<button type="button" class="nb-btn" id="btnArquivar" data-id="' + p.id + '">Arquivar pedido</button>';
             } else if (!perfilExcecao()) {
-                html += '<p class="det-alert-note">Somente o perfil de exce├º├úo pode arquivar.</p>';
+                html += '<p class="det-alert-note">Somente o perfil de exceção pode arquivar.</p>';
             }
             return html + '</div>';
         }
         if (p.status !== 'Pendencia Contratual') return '';
         if (!clienteTemFlagContratual(p.clienteId)) return '';
         if (perfilClienteClassifica()) {
-            return '<div class="det-alert det-alert--warn" role="region" aria-label="Classifica├º├úo do pedido">' +
+            return '<div class="det-alert det-alert--warn" role="region" aria-label="Classificação do pedido">' +
                 '<p class="det-alert-title">Classificar pedido</p>' +
-                '<p class="det-classif-prompt">Escolha uma op├º├úo para continuar:</p>' +
-                '<div class="det-choice" role="radiogroup" aria-label="Tipo de classifica├º├úo">' +
+                '<p class="det-classif-prompt">Escolha uma opção para continuar:</p>' +
+                '<div class="det-choice" role="radiogroup" aria-label="Tipo de classificação">' +
                     '<label class="det-choice-opt">' +
                         '<input type="radio" name="classif" value="Interno">' +
                         '<strong>Interno</strong>' +
@@ -367,18 +367,18 @@
                     '<label class="det-choice-opt">' +
                         '<input type="radio" name="classif" value="Externo">' +
                         '<strong>Externo</strong>' +
-                        '<span>N├úo fica Regular; permanece at├® o perfil de exce├º├úo arquivar</span>' +
+                        '<span>Não fica Regular; permanece até o perfil de exceção arquivar</span>' +
                     '</label>' +
                 '</div>' +
                 '<div class="det-classif-actions">' +
                     '<button type="button" class="nb-btn is-disabled" id="btnClassificar" data-id="' + p.id +
-                    '" disabled aria-disabled="true">Confirmar classifica├º├úo</button>' +
+                    '" disabled aria-disabled="true">Confirmar classificação</button>' +
                     '<p class="det-classif-hint" id="classifHint">Selecione Interno ou Externo</p>' +
                 '</div></div>';
         }
         return '<div class="det-alert det-alert--warn" role="status">' +
-            '<p class="det-alert-title">Aguardando classifica├º├úo do Cliente</p>' +
-            '<p class="det-alert-note" style="margin:0">A classifica├º├úo Interno/Externo ├® do perfil Cliente (CSN). Demarco e exce├º├úo apenas visualizam.</p>' +
+            '<p class="det-alert-title">Aguardando classificação do Cliente</p>' +
+            '<p class="det-alert-note" style="margin:0">A classificação Interno/Externo é do perfil Cliente (CSN). Demarco e exceção apenas visualizam.</p>' +
             '</div>';
     }
 
@@ -396,11 +396,11 @@
         var pend = pendenciasDoPedido(p);
         function has(k) { return pend.indexOf(k) >= 0; }
         var fornPend = has('fornecedor');
-        var endereco = 'Av. das Ind├║strias, ' + (1000 + p.id) + ' - Galp├úo ' + p.fornecedorId +
+        var endereco = 'Av. das Indústrias, ' + (1000 + p.id) + ' - Galpão ' + p.fornecedorId +
             ', Distrito Industrial, Contagem/MG';
         var pendUns = unidadesPendentesAtivas(p);
         var ignUns = p.ignoredUnidades || [];
-        /* Ignorar: s├│ em unidade PENDENTE e s├│ se restar ÔëÑ1 unidade no lote */
+        /* Ignorar: só em unidade PENDENTE e só se restar ≥1 unidade no lote */
         var podeIgnorarMais = perfilExcecao() && uns.length > 1;
 
         var unidadesHtml = '<div class="det-section"><h3>Unidades</h3><ul class="det-rows">';
@@ -408,7 +408,7 @@
             unidadesHtml += row('Unidade', '-', false);
         } else {
             orig.forEach(function (u) {
-                var cod = (COD_SAP[u] || 'SAP0000') + ' ┬À ' + u;
+                var cod = (COD_SAP[u] || 'SAP0000') + ' · ' + u;
                 if (ignUns.indexOf(u) >= 0) {
                     unidadesHtml += row(u, 'Ignorada neste lote', false);
                     return;
@@ -456,7 +456,7 @@
                     '<span class="det-meta-value">' + esc(p.documento) +
                     (p.cadastroAtivo ? ' <span class="ux-selo-ativo" title="Pedido ativo">A</span>' : '') +
                     '</span></div>' +
-                '<div class="det-meta-item"><span class="det-meta-label">In├¡cio</span>' +
+                '<div class="det-meta-item"><span class="det-meta-label">Início</span>' +
                     '<span class="det-meta-value">' + esc(formatarData(p.dataInicio || p.dataInclusao)) + '</span></div>' +
                 '<div class="det-meta-item"><span class="det-meta-label">Fim</span>' +
                     '<span class="det-meta-value">31/12/26</span></div>' +
@@ -465,10 +465,10 @@
             renderAlertClassif(p) +
             '<div class="det-section"><h3>Fornecedor</h3><ul class="det-rows">' +
                 row('CNPJ', cnpjFornecedor(p), fornPend) +
-                row('Raz├úo Social', nome, fornPend) +
+                row('Razão Social', nome, fornPend) +
                 row('E-mail', 'contato' + p.fornecedorId + '@fornecedor.com.br', fornPend) +
                 row('Telefone', '(31) 3333-' + (1000 + p.id), fornPend) +
-                row('Endere├ºo', endereco, fornPend) +
+                row('Endereço', endereco, fornPend) +
                 rowHtml('Status Geral', badgeStatusFornecedor(statusGeralFornecedor(p.status)), fornPend) +
             '</ul></div>' +
             '<div class="det-section"><h3>Dados Contratante</h3><ul class="det-rows">' +
@@ -478,7 +478,7 @@
             '</ul></div>' +
             unidadesHtml +
             subsHtml +
-            '<div class="det-section"><h3>Tracking do v├¡nculo</h3>' +
+            '<div class="det-section"><h3>Tracking do vínculo</h3>' +
                 '<ul class="ux-timeline">' + (track || '<li>Sem eventos</li>') + '</ul></div>';
 
         $('#detBody').html(html);
@@ -505,8 +505,8 @@
     function abrirConfirmClassif(id, val) {
         pendingClassif = { id: id, val: val };
         var texto = val === 'Interno'
-            ? 'Classificar como <strong>Interno</strong>? O status pode ir para Regular ou Pend├¬ncia Cadastral.'
-            : 'Classificar como <strong>Externo</strong>? O pedido <strong>n├úo</strong> fica Regular e permanece no pr├®-cadastro at├® o perfil de exce├º├úo arquivar.';
+            ? 'Classificar como <strong>Interno</strong>? O status pode ir para Regular ou Pendência Cadastral.'
+            : 'Classificar como <strong>Externo</strong>? O pedido <strong>não</strong> fica Regular e permanece no pré-cadastro até o perfil de exceção arquivar.';
         $('#confirmMsg').html(texto);
         openModal('divConfirmClassif');
         setTimeout(function () { $('#confirmOk').trigger('focus'); }, 50);
@@ -534,20 +534,20 @@
                 classificacao: 'Interno',
                 cadastroAtivo: novo === 'Regular' ? true : !!p.cadastroAtivo,
                 tracking: pushTrack(p, novo === 'Regular'
-                    ? 'Classificado Interno ÔåÆ Regular; cadastro ativo criado/atualizado.'
-                    : 'Classificado Interno; permanece em Pend├¬ncia Cadastral.')
+                    ? 'Classificado Interno → Regular; cadastro ativo criado/atualizado.'
+                    : 'Classificado Interno; permanece em Pendência Cadastral.')
             };
             await nbMock.update('pedidos', id, patch);
             nbMock.toast('msgSucesso', novo === 'Regular'
                 ? 'Pedido classificado como Interno e regularizado.'
-                : 'Pedido classificado como Interno. Agora est├í em Pend├¬ncia Cadastral.');
+                : 'Pedido classificado como Interno. Agora está em Pendência Cadastral.');
         } else {
             await nbMock.update('pedidos', id, {
                 status: 'Pendencia Contratual',
                 classificacao: 'Externo',
-                tracking: pushTrack(p, 'Classificado Externo ÔÇö nunca Regular; permanece at├® arquivar.')
+                tracking: pushTrack(p, 'Classificado Externo — nunca Regular; permanece até arquivar.')
             });
-            nbMock.toast('msgSucesso', 'Pedido classificado como Externo. N├úo fica Regular.');
+            nbMock.toast('msgSucesso', 'Pedido classificado como Externo. Não fica Regular.');
         }
         fecharConfirm();
         fecharDetalhe();
@@ -569,7 +569,7 @@
         if (tipo === 'unidade') {
             var pendAtivas = unidadesPendentesAtivas(p);
             if (pendAtivas.indexOf(key) < 0) {
-                nbMock.toast('msgAlerta', 'S├│ ├® poss├¡vel ignorar unidades pendentes.');
+                nbMock.toast('msgAlerta', 'Só é possível ignorar unidades pendentes.');
                 pendingBypass = null;
                 return;
             }
@@ -580,16 +580,16 @@
                 return;
             }
             $('#bypassTitulo').text('Ignorar unidade neste lote');
-            $('#bypassMsg').text('A unidade ' + key + ' n├úo entra no cadastro deste lote. As demais unidades pendentes permanecem at├® serem ignoradas individualmente. Precisa restar ÔëÑ 1 unidade.');
+            $('#bypassMsg').text('A unidade ' + key + ' não entra no cadastro deste lote. As demais unidades pendentes permanecem até serem ignoradas individualmente. Precisa restar ≥ 1 unidade.');
         } else {
             var pendSubs = subsPendentesAtivas(p).map(function (s) { return s.cnpj; });
             if (pendSubs.indexOf(key) < 0) {
-                nbMock.toast('msgAlerta', 'S├│ ├® poss├¡vel ignorar subcontratadas pendentes.');
+                nbMock.toast('msgAlerta', 'Só é possível ignorar subcontratadas pendentes.');
                 pendingBypass = null;
                 return;
             }
             $('#bypassTitulo').text('Ignorar subcontratada neste lote');
-            $('#bypassMsg').text('A subcontratada ' + key + ' n├úo entra no cadastro deste lote. O pr├│ximo envio reavalia.');
+            $('#bypassMsg').text('A subcontratada ' + key + ' não entra no cadastro deste lote. O próximo envio reavalia.');
         }
         $('#bypassJust').val('');
         openModal('divBypass');
@@ -598,12 +598,12 @@
     async function confirmarBypass() {
         var just = ($('#bypassJust').val() || '').trim();
         if (!just) {
-            nbMock.toast('msgAlerta', 'Justificativa obrigat├│ria.');
+            nbMock.toast('msgAlerta', 'Justificativa obrigatória.');
             return;
         }
         var b = pendingBypass;
         if (!b || !b.key) {
-            nbMock.toast('msgAlerta', 'N├úo foi poss├¡vel identificar o item a ignorar.');
+            nbMock.toast('msgAlerta', 'Não foi possível identificar o item a ignorar.');
             return;
         }
         var p = nbMock.getSync('pedidos', b.id);
@@ -628,7 +628,7 @@
             patch.cadastroAtivo = true;
             merged.status = patch.status;
             merged.cadastroAtivo = patch.cadastroAtivo;
-            patch.tracking = pushTrack(merged, 'Sem pend├¬ncias restantes neste lote ÔåÆ Regular.');
+            patch.tracking = pushTrack(merged, 'Sem pendências restantes neste lote → Regular.');
         }
         await nbMock.update('pedidos', b.id, patch);
         closeModal('divBypass');
@@ -641,7 +641,7 @@
     async function confirmarArquivar() {
         var just = ($('#arquivarJust').val() || '').trim();
         if (!just) {
-            nbMock.toast('msgAlerta', 'Justificativa obrigat├│ria.');
+            nbMock.toast('msgAlerta', 'Justificativa obrigatória.');
             return;
         }
         var id = pendingArquivarId;
@@ -649,12 +649,12 @@
         await nbMock.update('pedidos', id, {
             arquivado: true,
             justificativaArquivo: just,
-            tracking: pushTrack(p, 'Arquivado pelo perfil de exce├º├úo. Justificativa: ' + just)
+            tracking: pushTrack(p, 'Arquivado pelo perfil de exceção. Justificativa: ' + just)
         });
         closeModal('divArquivar');
         pendingArquivarId = null;
         fecharDetalhe();
-        nbMock.toast('msgSucesso', 'Pedido arquivado (n├úo foi exclu├¡do).');
+        nbMock.toast('msgSucesso', 'Pedido arquivado (não foi excluído).');
         await filtrar();
     }
 
@@ -694,7 +694,7 @@
         currentPage = 1;
         $('#gridBody').empty();
         $('#gridVazio').html(
-            '<span class="nb-empty-state-icon" aria-hidden="true">ÔîÇ</span>' +
+            '<span class="nb-empty-state-icon" aria-hidden="true">⌀</span>' +
             '<strong>Nenhuma consulta realizada</strong><br />' +
             'Selecione os filtros desejados e clique em <strong>Filtrar</strong>.'
         ).show();
@@ -754,17 +754,17 @@
         var winStart = win[0];
         var winEnd = win[win.length - 1];
         if (winStart > 1) {
-            html += '<a href="#" class="ux-pager-last" data-page="1" aria-label="Primeira p├ígina">┬½ Primeira</a>';
-            if (winStart > 2) html += '<span class="ux-pager-ellipsis" aria-hidden="true">ÔÇª</span>';
+            html += '<a href="#" class="ux-pager-last" data-page="1" aria-label="Primeira página">« Primeira</a>';
+            if (winStart > 2) html += '<span class="ux-pager-ellipsis" aria-hidden="true">…</span>';
         }
         win.forEach(function (item) {
             html += item === currentPage
                 ? '<span aria-current="page">' + item + '</span>'
-                : '<a href="#" data-page="' + item + '" aria-label="Ir para p├ígina ' + item + '">' + item + '</a>';
+                : '<a href="#" data-page="' + item + '" aria-label="Ir para página ' + item + '">' + item + '</a>';
         });
         if (winEnd < pages) {
-            if (winEnd < pages - 1) html += '<span class="ux-pager-ellipsis" aria-hidden="true">ÔÇª</span>';
-            html += '<a href="#" class="ux-pager-last" data-page="' + pages + '" aria-label="├Ültima p├ígina">├Ültima ┬╗</a>';
+            if (winEnd < pages - 1) html += '<span class="ux-pager-ellipsis" aria-hidden="true">…</span>';
+            html += '<a href="#" class="ux-pager-last" data-page="' + pages + '" aria-label="Última página">Última »</a>';
         }
         $pager.html(html).removeAttr('hidden');
     }
@@ -838,9 +838,9 @@
         var list = p.subcontratadas || [];
         if (!list.length) {
             var tip = p.clienteId === CSN_ID
-                ? 'Este pedido n├úo possui subcontratadas'
-                : 'Este contrato n├úo possui subcontratadas';
-            return '<span title="' + esc(tip) + '">ÔÇö</span>';
+                ? 'Este pedido não possui subcontratadas'
+                : 'Este contrato não possui subcontratadas';
+            return '<span title="' + esc(tip) + '">—</span>';
         }
         if (list.length === 1) return esc(list[0].nome || list[0].cnpj);
         return '<button type="button" class="nb-grid-icon-btn btn-subs" data-id="' + p.id + '"' +
@@ -864,7 +864,7 @@
         var total = filteredRows.length;
         if (!total) {
             $('#gridVazio').html(
-                '<span class="nb-empty-state-icon" aria-hidden="true">ÔîÇ</span>' +
+                '<span class="nb-empty-state-icon" aria-hidden="true">⌀</span>' +
                 '<strong>Nenhum pedido encontrado</strong><br />' +
                 'Ajuste ou limpe os filtros e tente novamente.'
             ).show();
@@ -882,7 +882,7 @@
                 ? '<span class="ux-pend-count" title="' + esc(pend.map(function (k) {
                     return (PEND_COPY[k] || {}).titulo || k;
                 }).join('; ')) + '">' +
-                    pend.length + (pend.length === 1 ? ' pend├¬ncia' : ' pend├¬ncias') + '</span>'
+                    pend.length + (pend.length === 1 ? ' pendência' : ' pendências') + '</span>'
                 : '';
             var selo = p.cadastroAtivo && p.status !== 'Regular'
                 ? '<span class="ux-selo-ativo" title="Pedido ativo">A</span>'
@@ -908,7 +908,7 @@
             );
         });
         var txt = total + (total === 1 ? ' pedido' : ' pedidos');
-        $('#liveResultados').text(txt + ' na listagem. P├ígina ' + currentPage + ' de ' + totalPages() + '.');
+        $('#liveResultados').text(txt + ' na listagem. Página ' + currentPage + ' de ' + totalPages() + '.');
         renderPager();
         atualizarBotaoExportar();
     }
@@ -992,7 +992,7 @@
             return '<li><span>' + esc(u) + '</span>' +
                 (COD_SAP[u] ? '<span class="nb-badge nb-badge--muted">' + esc(COD_SAP[u]) + '</span>' : '') + '</li>';
         }).join('');
-        $('#unidadesTitulo').text('Unidades ÔÇö documento ' + (p.documento || ''));
+        $('#unidadesTitulo').text('Unidades — documento ' + (p.documento || ''));
         $('#unidadesBody').html(
             '<p style="margin:0 0 .75rem;font-size:.875rem;color:#4a4a4a">' +
                 uns.length + (uns.length === 1 ? ' unidade vinculada' : ' unidades vinculadas') +
@@ -1006,7 +1006,7 @@
         var items = list.map(function (s) {
             return '<li><span>' + esc(s.nome) + '</span><span class="nb-badge nb-badge--muted">' + esc(s.cnpj) + '</span></li>';
         }).join('');
-        $('#subsTitulo').text('Subcontratadas ÔÇö ' + (p.documento || ''));
+        $('#subsTitulo').text('Subcontratadas — ' + (p.documento || ''));
         $('#subsBody').html('<ul class="ux-subs-lista">' + items + '</ul>');
         openModal('divSubs');
     }
@@ -1021,9 +1021,9 @@
             $('#fltCliente').prop('disabled', true).trigger('change.select2');
             $('#campoCliente').addClass('is-locked');
             if (perfil === 'cliente') {
-                $('#perfilHint').text('Vis├úo Cliente (Grupo CSN) ÔÇö classifica Interno/Externo. Sem bypass e sem arquivar.');
+                $('#perfilHint').text('Visão Cliente (Grupo CSN) — classifica Interno/Externo. Sem bypass e sem arquivar.');
             } else {
-                $('#perfilHint').text('Vis├úo Exce├º├úo (CSN) ÔÇö pode ignorar unidade/sub neste lote e arquivar Externo. N├úo classifica Interno/Externo.');
+                $('#perfilHint').text('Visão Exceção (CSN) — pode ignorar unidade/sub neste lote e arquivar Externo. Não classifica Interno/Externo.');
             }
             limpar();
             filtrar();
@@ -1034,7 +1034,7 @@
             if ($('#fltCliente').val() === String(CLIENTE_LOGADO_ID)) {
                 $('#fltCliente').val('').trigger('change');
             }
-            $('#perfilHint').text('Vis├úo Demarco ÔÇö todos os clientes. N├úo classifica nem arquiva; usa os filtros e Filtrar.');
+            $('#perfilHint').text('Visão Demarco — todos os clientes. Não classifica nem arquiva; usa os filtros e Filtrar.');
             limpar();
             limparResultados();
             atualizarBotaoFiltrar();
@@ -1075,11 +1075,11 @@
         $('#btnExportar').on('click', function () {
             var n = filteredRows.length;
             if (!n) {
-                nbMock.toast('msgAlerta', 'N├úo h├í pedidos na listagem para exportar.');
+                nbMock.toast('msgAlerta', 'Não há pedidos na listagem para exportar.');
                 return;
             }
             nbMock.simulate(function () {
-                nbMock.toast('msgSucesso', 'Exporta├º├úo de ' + n + ' pedido(s) conclu├¡da (prot├│tipo).');
+                nbMock.toast('msgSucesso', 'Exportação de ' + n + ' pedido(s) concluída (protótipo).');
             });
         });
         $('#selPageSize').on('change', function () {
@@ -1122,7 +1122,7 @@
             chipDetalheAberto = chipDetalheAberto === k ? null : k;
             var id = parseInt($('#detTitulo').text().replace(/\D/g, ''), 10);
             var p = filteredRows.filter(function (r) { return String(r.documento) === String(id) || r.documento.indexOf(String(id)) >= 0; })[0];
-            /* t├¡tulo ├® "Pedido 45000..." ÔÇö recupera pelo t├¡tulo */
+            /* título é "Pedido 45000..." — recupera pelo título */
             var doc = $('#detTitulo').text().replace(/^Pedido\s+/, '');
             p = nbMock.listSync('pedidos').filter(function (x) { return x.documento === doc; })[0];
             if (p) renderDetalheFromPedido(p);
