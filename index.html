@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gestão de Pré-Cadastro de Pedidos — UX Melhorado</title>
+    <title>Gest├úo de Pr├®-Cadastro de Pedidos ÔÇö UX Melhorado</title>
 
     <link href="assets/CSS/utils.css" rel="stylesheet" />
     <link href="assets/CSS/select2.min.css" rel="stylesheet" />
@@ -11,11 +11,11 @@
     <link href="assets/CSS/NovoBancodoc.css" rel="stylesheet" />
 
     <style>
-        /* ── A11y / contraste (WCAG AA) ───────────────────────────────────── */
+        /* ÔöÇÔöÇ A11y / contraste (WCAG AA) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
         :root {
             --ux-text: #1a1a1a;
-            --ux-text-secondary: #4a4a4a;   /* ≥4.5:1 em fundo branco */
-            --ux-text-muted: #595959;       /* ≥4.5:1 — substitui #8a8a8a/#777 */
+            --ux-text-secondary: #4a4a4a;   /* ÔëÑ4.5:1 em fundo branco */
+            --ux-text-muted: #595959;       /* ÔëÑ4.5:1 ÔÇö substitui #8a8a8a/#777 */
             --ux-border: #c8c8c8;
             --ux-focus: #0b57d0;
             --ux-danger: #b3261e;
@@ -45,18 +45,19 @@
         }
         .ux-skip:focus { left: .5rem; top: .5rem; }
 
-        /* Foco visível reforçado */
+        /* Foco vis├¡vel refor├ºado */
         .nb-btn:focus-visible,
         .nb-input:focus-visible,
         .nb-profile-switch button:focus-visible,
         .nb-grid-icon-btn:focus-visible,
         .ux-doc-link:focus-visible,
-        .ux-chip-status:focus-visible {
+        .ux-chip-status:focus-visible,
+        .ux-chip-action:focus-visible {
             outline: 3px solid var(--ux-focus);
             outline-offset: 2px;
         }
 
-        /* ── Barra de simulação de perfil (protótipo) ────────────────────── */
+        /* ÔöÇÔöÇ Barra de simula├º├úo de perfil (prot├│tipo) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
         .nb-profile-bar {
             display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
             justify-content: space-between;
@@ -97,7 +98,7 @@
             margin-bottom: .25rem;
         }
 
-        /* Campo desabilitado: além de opacity, indicação textual */
+        /* Campo desabilitado: al├®m de opacity, indica├º├úo textual */
         .nb-field.is-locked .nb-field-label::after {
             content: " (fixo ao seu perfil)";
             font-weight: 400; color: var(--ux-text-muted); font-size: .8em;
@@ -107,7 +108,7 @@
             opacity: .85; cursor: not-allowed;
         }
 
-        /* ── Grid: link do documento + área de toque ─────────────────────── */
+        /* ÔöÇÔöÇ Grid: link do documento + ├írea de toque ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
         .ux-doc-link {
             color: #0b57d0; font-weight: 600; text-decoration: underline;
             text-underline-offset: 2px; background: none; border: 0;
@@ -118,23 +119,6 @@
             min-width: 40px; min-height: 40px;
             display: inline-flex; align-items: center; justify-content: center;
         }
-        /* Ícone de olho (mesmo sprite/tamanho do lápis) */
-        .nb-icon--view {
-            background-image: none;
-            background-color: #222;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
-        }
-        #divUnidades .nb-modal-box { max-width: 480px; width: 92vw; }
-        .ux-unidades-lista {
-            margin: 0; padding: 0; list-style: none;
-        }
-        .ux-unidades-lista li {
-            display: flex; align-items: center; justify-content: space-between; gap: .75rem;
-            padding: .65rem 0; border-bottom: 1px solid #eee; font-size: .9rem; color: var(--ux-text);
-        }
-        .ux-unidades-lista li:last-child { border-bottom: 0; padding-bottom: 0; }
-        .ux-unidades-lista li:first-child { padding-top: 0; }
         .ux-pend-count {
             display: inline-flex; align-items: center; gap: .25rem;
             margin-left: .35rem; font-size: .75rem; font-weight: 700;
@@ -142,8 +126,46 @@
             border: 1px solid #f0b4b0; border-radius: 4px;
             padding: .05rem .35rem; vertical-align: middle;
         }
+        .nb-icon--view {
+            background-image: none;
+            background-color: #222;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 1 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M8 3C4.5 3 1.7 5.1 1 8c.7 2.9 3.5 5 7 5s6.3-2.1 7-5c-.7-2.9-3.5-5-7-5zm0 8.2A3.2 3.2 0 1 1 8 4.8a3.2 3.2 0 0 1 0 6.4zm0-5.1a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 1 0 0-3.8z'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
+        }
+        .ux-selo-ativo {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 1.15rem; height: 1.15rem; margin-left: .35rem;
+            border-radius: 50%; background: var(--ux-success-bg);
+            color: var(--ux-success); font-size: .7rem; font-weight: 800;
+            vertical-align: middle; border: 1px solid #b7e0c5;
+        }
+        .ux-unidades-lista, .ux-subs-lista { margin: 0; padding: 0; list-style: none; }
+        .ux-unidades-lista li, .ux-subs-lista li {
+            display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+            padding: .65rem 0; border-bottom: 1px solid #eee; font-size: .9rem;
+        }
+        .ux-unidades-lista li:last-child, .ux-subs-lista li:last-child { border-bottom: 0; padding-bottom: 0; }
+        .ux-chip-card {
+            display: block; width: 100%; text-align: left;
+            border: 1px solid #e8a09c; background: #fff; border-radius: 8px;
+            padding: .65rem .75rem; margin: 0 0 .45rem; cursor: pointer;
+        }
+        .ux-chip-card strong { display: block; font-size: .85rem; color: var(--ux-danger); }
+        .ux-chip-card span { display: block; font-size: .78rem; color: var(--ux-text-secondary); margin-top: .25rem; line-height: 1.35; }
+        .ux-timeline { margin: 0; padding: 0 0 0 1rem; border-left: 2px solid #ddd; list-style: none; }
+        .ux-timeline li { padding: 0 0 .75rem .85rem; position: relative; }
+        .ux-timeline li::before {
+            content: ""; position: absolute; left: -1.15rem; top: .35rem;
+            width: .55rem; height: .55rem; border-radius: 50%; background: #888;
+        }
+        .ux-timeline time { display: block; font-size: .72rem; color: var(--ux-text-muted); }
+        .ux-check-audit { display: flex; align-items: center; gap: .45rem; font-size: .875rem; margin: .5rem 0 0; }
+        .det-alert--muted { background: #f4f4f4; border-color: #d0d0d0; color: var(--ux-text); }
+        #divUnidades .nb-modal-box, #divSubs .nb-modal-box, #divBypass .nb-modal-box, #divArquivar .nb-modal-box {
+            max-width: 480px; width: 92vw;
+        }
 
-        /* Empty state sem depender só de emoji */
+        /* Empty state sem depender s├│ de emoji */
         .nb-empty-state { color: var(--ux-text-secondary); padding: 2rem 1rem; text-align: center; }
         .nb-empty-state-icon {
             display: block; font-size: 2rem; margin-bottom: .5rem;
@@ -156,7 +178,7 @@
             overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
         }
 
-        /* ── Modal detalhe (limpo, com abas) ─────────────────────────────── */
+        /* ÔöÇÔöÇ Modal detalhe (limpo, com abas) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
         #divDetalhe .nb-modal-box {
             width: min(920px, 94vw); max-width: 920px; height: auto;
             max-height: 90vh;
@@ -193,7 +215,7 @@
             word-break: break-word;
         }
 
-        /* Alerta único (pendência ou classificação) — sem repetir depois */
+        /* Alerta ├║nico (pend├¬ncia ou classifica├º├úo) ÔÇö sem repetir depois */
         .det-alert {
             margin: 1rem 1.25rem 0; padding: .75rem 1rem;
             border-radius: 8px; border: 1px solid transparent;
@@ -221,7 +243,7 @@
             margin: .55rem 0 0; font-size: .8rem; opacity: .9; line-height: 1.35;
         }
 
-        /* Classificação: opções contrastantes + rádio visível */
+        /* Classifica├º├úo: op├º├Áes contrastantes + r├ídio vis├¡vel */
         .det-classif-prompt {
             margin: 0 0 .65rem; font-size: .85rem; color: #5c3d00; line-height: 1.35;
         }
@@ -285,7 +307,7 @@
             opacity: .45; cursor: not-allowed; pointer-events: none;
         }
 
-        /* Abas removidas — seções lineares no detalhe */
+        /* Abas removidas ÔÇö se├º├Áes lineares no detalhe */
         .det-section {
             padding: 1rem 1.25rem 0;
         }
@@ -390,7 +412,7 @@
             width: .5rem; height: .5rem; border-radius: 50%; flex-shrink: 0;
         }
 
-        /* Barra superior: itens por página + chips (esq) | intervalo (dir) */
+        /* Barra superior: itens por p├ígina + chips (esq) | intervalo (dir) */
         .ux-pager-top {
             display: flex; align-items: center; justify-content: space-between;
             gap: 1rem; flex-wrap: wrap;
@@ -440,7 +462,7 @@
             border-right: 0;
         }
 
-        /* Paginação centralizada abaixo da tabela */
+        /* Pagina├º├úo centralizada abaixo da tabela */
         .ux-pager.grid-pager {
             display: flex; flex-wrap: wrap; gap: 4px;
             justify-content: center; align-items: center;
@@ -475,7 +497,7 @@
             .ux-pager.grid-pager { justify-content: center; }
         }
 
-        /* Ordenação de colunas (padrão do print: ▲ ao lado do título) */
+        /* Ordena├º├úo de colunas (padr├úo do print: Ôû▓ ao lado do t├¡tulo) */
         .nb-grid thead th.ux-sortable {
             cursor: pointer; user-select: none; white-space: nowrap;
         }
@@ -503,7 +525,7 @@
         .nb-grid thead th[style*="center"] .ux-sort-btn { justify-content: center; }
         .nb-grid thead th[style*="left"] .ux-sort-btn { justify-content: flex-start; }
 
-        /* Confirmação enxuta */
+        /* Confirma├º├úo enxuta */
         #divConfirmClassif .nb-modal-box { max-width: 400px; }
         #divConfirmClassif .nb-modal-body { padding: 1rem 1.25rem; }
         #confirmMsg { margin: 0; line-height: 1.5; color: var(--ux-text); font-size: .95rem; }
@@ -518,25 +540,26 @@
     </style>
 </head>
 <body class="fundo_default">
-    <a class="ux-skip" href="#conteudoPrincipal">Ir para o conteúdo</a>
+    <a class="ux-skip" href="#conteudoPrincipal">Ir para o conte├║do</a>
 
     <div>
         <div class="nb-page-wrap-double" id="conteudoPrincipal">
 
-            <div class="nb-profile-bar" role="group" aria-label="Simulação de perfil de acesso">
+            <div class="nb-profile-bar" role="group" aria-label="Simula├º├úo de perfil de acesso">
                 <div>
-                    <span class="ux-proto-tag">Protótipo</span>
+                    <span class="ux-proto-tag">Prot├│tipo</span>
                     <span class="nb-profile-label">Simular perfil de acesso:</span>
                 </div>
                 <div class="nb-profile-switch" id="perfilSwitch" role="tablist" aria-label="Perfil">
                     <button type="button" role="tab" data-perfil="demarco" class="active" aria-selected="true">Demarco</button>
                     <button type="button" role="tab" data-perfil="cliente" aria-selected="false">Cliente</button>
+                    <button type="button" role="tab" data-perfil="excecao" aria-selected="false">Exce├º├úo</button>
                 </div>
             </div>
 
-            <h1 class="nb-page-title">Gestão de Pré-Cadastro de Pedidos</h1>
+            <h1 class="nb-page-title">Gest├úo de Pr├®-Cadastro de Pedidos</h1>
             <p class="nb-profile-hint" id="perfilHint" aria-live="polite">
-                Visão Demarco — todos os clientes e filtros disponíveis.
+                Vis├úo Demarco ÔÇö todos os clientes e filtros dispon├¡veis.
             </p>
 
             <p class="ux-glossario-link">
@@ -570,7 +593,8 @@
                         <div class="nb-field">
                             <label class="nb-field-label" for="fltUnidade">Unidade</label>
                             <select id="fltUnidade" class="nb-select nb-select--search">
-                                <option value="">Todos</option>
+                                <option value=""></option>
+                                <option value="__todos__">Todos</option>
                                 <option value="Unidade Pedro Leopoldo">Unidade Pedro Leopoldo</option>
                                 <option value="Agregados Barueri">Agregados Barueri</option>
                                 <option value="Agregados Cajamar">Agregados Cajamar</option>
@@ -581,7 +605,8 @@
                         <div class="nb-field">
                             <label class="nb-field-label" for="fltFornecedor">Fornecedor</label>
                             <select id="fltFornecedor" class="nb-select nb-select--search">
-                                <option value="">Todos</option>
+                                <option value=""></option>
+                                <option value="__todos__">Todos</option>
                             </select>
                         </div>
                     </div>
@@ -590,12 +615,16 @@
                             <label class="nb-field-label" for="fltStatus">Status</label>
                             <select id="fltStatus" class="nb-select">
                                 <option value="">Todos</option>
-                                <option value="Pendencia Contratual">Pendência Contratual</option>
-                                <option value="Pendencia Cadastral">Pendência Cadastral</option>
+                                <option value="Pendencia Contratual">Pend├¬ncia Contratual</option>
+                                <option value="Pendencia Cadastral">Pend├¬ncia Cadastral</option>
                                 <option value="Regular">Regular</option>
                             </select>
                         </div>
                     </div>
+                    <label class="ux-check-audit">
+                        <input type="checkbox" id="fltArquivados" />
+                        Incluir arquivados (auditoria)
+                    </label>
                     <div class="nb-form-actions nb-form-actions--center">
                         <button type="submit" id="btnFiltrar" class="nb-btn" disabled aria-disabled="true">Filtrar</button>
                         <button type="button" id="btnLimpar" class="nb-btn nb-btn--secondary">Limpar filtros</button>
@@ -616,8 +645,8 @@
                 <div class="ux-pager-top" id="pagerTop" hidden>
                     <div class="ux-pager-top-left">
                         <label class="ux-page-size" for="selPageSize">
-                            <span class="ux-page-size-label">Itens por página</span>
-                            <select id="selPageSize" class="nb-select" aria-label="Itens por página">
+                            <span class="ux-page-size-label">Itens por p├ígina</span>
+                            <select id="selPageSize" class="nb-select" aria-label="Itens por p├ígina">
                                 <option value="10" selected>10</option>
                                 <option value="20">20</option>
                                 <option value="30">30</option>
@@ -634,62 +663,49 @@
                         <table class="nb-grid" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align:center;width:88px">Ações</th>
+                                    <th scope="col" style="text-align:center;width:88px">A├º├Áes</th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="documento" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Documento de Compra <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Documento de Compra <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="fornecedor" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Fornecedor <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Fornecedor <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="unidade" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Unidade <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Unidade <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
+                                    </th>
+                                    <th scope="col" class="ux-sortable" style="text-align:left" data-sort="subcontratadas" aria-sort="none">
+                                        <button type="button" class="ux-sort-btn">Subcontratadas <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:left" data-sort="gestor" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Gestor do Contrato <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Gestor do Contrato <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInclusao" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Data de Inclusão <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Data de Inclus├úo <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
-                                    <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInicio" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Data de início <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                    <th scope="col" class="ux-sortable" style="text-align:center" data-sort="dataInicio" aria-sort="ascending">
+                                        <button type="button" class="ux-sort-btn">Data de in├¡cio <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                     <th scope="col" class="ux-sortable" style="text-align:center" data-sort="status" aria-sort="none">
-                                        <button type="button" class="ux-sort-btn">Status <span class="ux-sort-icon" aria-hidden="true">▲</span></button>
+                                        <button type="button" class="ux-sort-btn">Status <span class="ux-sort-icon" aria-hidden="true">Ôû▓</span></button>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="gridBody"></tbody>
                         </table>
                         <div id="gridVazio" class="nb-empty-state" role="status">
-                            <span class="nb-empty-state-icon" aria-hidden="true">⌀</span>
+                            <span class="nb-empty-state-icon" aria-hidden="true">ÔîÇ</span>
                             <strong>Nenhuma consulta realizada</strong><br />
                             Selecione os filtros desejados e clique em <strong>Filtrar</strong>.
                         </div>
                     </div>
                 </div>
-                <nav class="grid-pager ux-pager" id="gridPager" aria-label="Paginação da lista" hidden></nav>
+                <nav class="grid-pager ux-pager" id="gridPager" aria-label="Pagina├º├úo da lista" hidden></nav>
             </fieldset>
 
         </div>
     </div>
 
-    <!-- Modal: unidades do documento -->
-    <div id="divUnidades" class="nb-modal-wrap" role="dialog" aria-modal="true"
-         aria-labelledby="unidadesTitulo">
-        <div class="nb-modal-box">
-            <div class="nb-modal-header">
-                <span class="nb-modal-title" id="unidadesTitulo">Unidades do documento</span>
-                <button type="button" class="nb-modal-close" id="unidadesFechar"
-                        aria-label="Fechar">&#215;</button>
-            </div>
-            <div class="nb-modal-body" id="unidadesBody" tabindex="-1"></div>
-            <div class="nb-modal-footer">
-                <button type="button" class="nb-btn nb-btn--secondary" id="unidadesFechar2">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: glossário de status -->
+    <!-- Modal: gloss├írio de status -->
     <div id="divGlossarioStatus" class="nb-modal-wrap" role="dialog" aria-modal="true"
          aria-labelledby="glossarioTitulo">
         <div class="nb-modal-box">
@@ -701,21 +717,33 @@
             <div class="nb-modal-body">
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
-                        <span class="nb-badge nb-badge--danger">Pendência Contratual</span>
+                        <span class="nb-badge nb-badge--danger">Pend├¬ncia Contratual</span>
                     </div>
-                    <p>O pedido aguarda classificação (Interno ou Externo) pelo perfil Cliente antes de seguir o fluxo.</p>
+                    <p>O pedido aguarda classifica├º├úo (Interno ou Externo) pelo perfil Cliente antes de seguir o fluxo.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
-                        <span class="nb-badge nb-badge--warning">Pendência Cadastral</span>
+                        <span class="nb-badge nb-badge--warning">Pend├¬ncia Cadastral</span>
                     </div>
-                    <p>Há dados do pedido que ainda não existem (ou não estão vinculados) no cadastro do sistema — fornecedor, unidade, gestor, etc.</p>
+                    <p>H├í dados do pedido que ainda n├úo existem (ou n├úo est├úo vinculados) no cadastro do sistema ÔÇö fornecedor, unidade, gestor, etc.</p>
                 </div>
                 <div class="ux-glossario-item">
                     <div class="ux-glossario-item-head">
                         <span class="nb-badge nb-badge--success">Regular</span>
                     </div>
-                    <p>Pedido apto a seguir o fluxo operacional sem bloqueios cadastrais ou de classificação.</p>
+                    <p>Pedido apto a seguir o fluxo operacional sem bloqueios cadastrais ou de classifica├º├úo. Externo nunca chega neste status.</p>
+                </div>
+                <div class="ux-glossario-item">
+                    <div class="ux-glossario-item-head">
+                        <span class="nb-badge nb-badge--muted">Externo</span>
+                    </div>
+                    <p>Classifica├º├úo do Cliente: o pedido n├úo segue o fluxo Demarco e nunca fica Regular. Permanece no pr├®-cadastro at├® o perfil de exce├º├úo arquivar.</p>
+                </div>
+                <div class="ux-glossario-item">
+                    <div class="ux-glossario-item-head">
+                        <span class="nb-badge nb-badge--muted">Arquivado</span>
+                    </div>
+                    <p>N├úo ├® um quarto status operacional: some da lista padr├úo e volta pelo filtro de auditoria (ÔÇ£Incluir arquivadosÔÇØ). Pedido j├í vigente com lote irregular usa o selo na coluna do documento.</p>
                 </div>
             </div>
             <div class="nb-modal-footer">
@@ -741,12 +769,74 @@
         </div>
     </div>
 
-    <!-- Modal: confirmação de classificação -->
+    <div id="divUnidades" class="nb-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="unidadesTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="unidadesTitulo">Unidades do documento</span>
+                <button type="button" class="nb-modal-close" id="unidadesFechar" aria-label="Fechar">&#215;</button>
+            </div>
+            <div class="nb-modal-body" id="unidadesBody" tabindex="-1"></div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="unidadesFechar2">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="divSubs" class="nb-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="subsTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="subsTitulo">Subcontratadas</span>
+                <button type="button" class="nb-modal-close" id="subsFechar" aria-label="Fechar">&#215;</button>
+            </div>
+            <div class="nb-modal-body" id="subsBody" tabindex="-1"></div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="subsFechar2">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="divBypass" class="nb-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="bypassTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="bypassTitulo">Ignorar neste lote</span>
+                <button type="button" class="nb-modal-close" id="bypassFechar" aria-label="Cancelar">&#215;</button>
+            </div>
+            <div class="nb-modal-body">
+                <p id="bypassMsg" style="margin:0 0 .75rem;line-height:1.45"></p>
+                <label class="nb-field-label" for="bypassJust">Justificativa</label>
+                <textarea id="bypassJust" class="nb-input" rows="3" style="width:100%" maxlength="400"></textarea>
+            </div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="bypassCancelar">Cancelar</button>
+                <button type="button" class="nb-btn" id="bypassOk">Ignorar neste lote</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="divArquivar" class="nb-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="arquivarTitulo">
+        <div class="nb-modal-box">
+            <div class="nb-modal-header">
+                <span class="nb-modal-title" id="arquivarTitulo">Arquivar pedido</span>
+                <button type="button" class="nb-modal-close" id="arquivarFechar" aria-label="Cancelar">&#215;</button>
+            </div>
+            <div class="nb-modal-body">
+                <p style="margin:0 0 .75rem;line-height:1.45">Este pedido n├úo segue o fluxo Demarco e n├úo fica Regular. Arquivar n├úo apaga o registro. Uma reentrada SAP do mesmo n├║mero gera um novo lote.</p>
+                <label class="nb-field-label" for="arquivarJust">Justificativa</label>
+                <textarea id="arquivarJust" class="nb-input" rows="3" style="width:100%" maxlength="400"></textarea>
+            </div>
+            <div class="nb-modal-footer">
+                <button type="button" class="nb-btn nb-btn--secondary" id="arquivarCancelar">Cancelar</button>
+                <button type="button" class="nb-btn" id="arquivarOk">Arquivar pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: confirma├º├úo de classifica├º├úo -->
     <div id="divConfirmClassif" class="nb-modal-wrap" role="dialog" aria-modal="true"
          aria-labelledby="confirmTitulo">
         <div class="nb-modal-box">
             <div class="nb-modal-header">
-                <span class="nb-modal-title" id="confirmTitulo">Confirmar classificação</span>
+                <span class="nb-modal-title" id="confirmTitulo">Confirmar classifica├º├úo</span>
                 <button type="button" class="nb-modal-close" id="confirmFechar" aria-label="Cancelar">&#215;</button>
             </div>
             <div class="nb-modal-body">
