@@ -20,8 +20,7 @@ Ou abra `index.html` diretamente no navegador (`file://`).
 
 ## Deploy
 
-Projeto estático na Vercel: [https://precadastro.vercel.app/](https://precadastro.vercel.app/)
-
+Projeto estático na Vercel: https://precadastrocsn.vercel.app/
 ## Perfis de teste
 
 - **Demarco** — consulta sob demanda (Filtrar)
